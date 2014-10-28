@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  database: nhl_development
+  username: <%= ENV['PG_USER'] %>
+  password: <%= ENV['PG_PASS'] %>
+  host: localhost
+production:
+  adapter: postgresql
+  database: nhl_production
+  username: <%= ENV['PG_USER'] %>
+  password: <%= ENV['PG_PASS'] %>
