@@ -14,6 +14,9 @@ gem 'sinatra-partial'
 # Using postgres as the DBMS
 gem 'pg'
 
+# Using require all for easy local Sinatra requires
+gem 'require_all'
+
 group :development do
 	# Using shotgun for development friendly server testing
 	gem 'shotgun'
