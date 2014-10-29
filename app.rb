@@ -1,8 +1,9 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/partial'
+require 'require_all'
 
-require './models/team'
+require_all 'models'
 
 get '/'  do
 	erb '<h1>Hello World!</h1>'
