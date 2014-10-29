@@ -23,6 +23,11 @@ class Team < ActiveRecord::Base
 
 	# Relationships
 	has_many :players
+	has_many :home_games, class_name: 'Game', foreign_key: 'home_team_id'
+	has_many :away_games, class_name: 'Game', foreign_key: 'away_team_id'
 
 	# Functions
+	def all_games
+		Game.all.where("home_team_id = #{id} or away_team_id = #{id}")
+	end
 end
