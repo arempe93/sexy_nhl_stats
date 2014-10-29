@@ -1,0 +1,64 @@
+# Pulls all NHL games and stores them in the database
+
+# Require
+require 'rubygems'
+require 'json'
+require 'open-uri'
+
+require 'sinatra/activerecord'
+require_relative '../models/game'
+require_relative '../models/team'
+
+# Drop current games
+Game.delete_all
+
+# Season file
+season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
+season = JSON.parse season_file.read
+
+# Loop through all games
+season.each do |game|
+
+	# Get game id
+	id = game['id']
+
+	puts "Opening game: #{id}"
+
+	# Get team abbreviations
+	home_team_abbv = game['h']
+	away_team_abbv = game['a']
+
+	# Get both teams
+	home_team = Team.find_by(abbv: home_team_abbv)
+	away_team = Team.find_by(abbv: away_team_abbv)
+
+	# Get the game date
+	game_date = DateTime.parse game['est']
+
+	# Create initial Game record
+	game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
+
+	# If this game has already been played
+	if DateTime.now > game_date
+
+		# Open scoreboard file
+		game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
+		game_stats = JSON.parse(game_stats_file.read[10..-2])
+
+		# Get home and away scores
+		away_score = game_stats['a']['tot']['g']
+		home_score = game_stats['h']['tot']['g']
+
+		# Get game decision
+		periods_played = game_stats['p']
+		game_decision = periods_played == 3 ? 'F' : (periods_played == 4 ? 'OT' : 'SO')
+
+		# Update Game record
+		game.home_team_score = home_score
+		game.away_team_score = away_score
+		game.decision = game_decision
+	end
+
+	# Save Game record
+	game.save
+end
