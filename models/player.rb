@@ -21,6 +21,11 @@ class Player < ActiveRecord::Base
 
 	# Relationships
 	belongs_to :team
+	has_many :stats, class_name: 'SkaterStat', foreign_key: 'player_id'
+	has_many :games, through: :stats, source: :game
 
 	# Functions
+	def games_played
+		games.count
+	end
 end
