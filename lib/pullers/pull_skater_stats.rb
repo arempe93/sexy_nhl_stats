@@ -4,10 +4,10 @@ require 'json'
 require 'open-uri'
 
 require 'sinatra/activerecord'
-require_relative '../models/team'
-require_relative '../models/player'
-require_relative '../models/game'
-require_relative '../models/skater_stat'
+require_relative '../../models/team'
+require_relative '../../models/player'
+require_relative '../../models/game'
+require_relative '../../models/skater_stat'
 
 # Drop current games
 SkaterStat.delete_all
@@ -23,7 +23,7 @@ season.each do |game_record|
 	id = game_record['id']
 
 	# Limit loop
-	break if id == 2014020137
+	next unless DateTime.now > DateTime.parse(game_record['est'])
 
 	# Get game record
 	game = Game.find_by(nhl_id: id)

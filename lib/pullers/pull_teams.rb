@@ -6,7 +6,7 @@ require 'json'
 require 'open-uri'
 
 require 'sinatra/activerecord'
-require_relative '../models/team'
+require_relative '../../models/team'
 
 # Drop current games
 Team.delete_all

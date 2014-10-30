@@ -4,8 +4,8 @@ require 'json'
 require 'open-uri'
 
 require 'sinatra/activerecord'
-require_relative '../models/team'
-require_relative '../models/player'
+require_relative '../../models/team'
+require_relative '../../models/player'
 
 # Drop current games
 Player.delete_all
@@ -21,7 +21,7 @@ season.each do |game|
 	id = game['id']
 
 	# Limit loop
-	break if id == 2014020137
+	next unless DateTime.now > DateTime.parse(game['est'])
 
 	puts "Opening game: #{id}"
 
