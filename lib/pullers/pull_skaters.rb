@@ -7,8 +7,8 @@ require 'sinatra/activerecord'
 require_relative '../../models/team'
 require_relative '../../models/player'
 
-# Drop current games
-Player.delete_all
+# Drop current skaters
+Player.delete_all("player_type = 'S'")
 
 # Season file
 season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
@@ -39,20 +39,6 @@ season.each do |game|
 
 	# Loop through all game plays
 	stats['plays']['play'].each do |play|
-
-		# Get goalie information if possible
-		if play['type'] == 'Shot'
-
-			# Skip this goalie if already stored
-			unless Player.find_by(nhl_id: play['pid2'])
-
-				# Get the team the goalie was on
-				goalie_team_id = play['teamid'] == home_team_id ? away_team.id : home_team.id
-
-				# Create goalie record
-				goalie = Player.create(nhl_id: play['pid2'], team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
-			end
-		end
 
 		# Get the player id
 		player_id = play['pid']
