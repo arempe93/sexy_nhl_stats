@@ -29,4 +29,9 @@ class Player < ActiveRecord::Base
 	def games_played
 		games.count
 	end
+
+	# Class Functions
+	def self.search(query)
+		Player.find_by(name: query)
+	end
 end

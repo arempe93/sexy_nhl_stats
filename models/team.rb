@@ -30,4 +30,9 @@ class Team < ActiveRecord::Base
 	def all_games
 		Game.all.where("home_team_id = #{id} or away_team_id = #{id}")
 	end
+
+	# Class Functions
+	def self.search(query)
+		Team.find_by(abbv: query) || Team.find_by(name: query)
+	end
 end
