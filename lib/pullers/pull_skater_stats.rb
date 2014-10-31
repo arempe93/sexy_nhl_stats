@@ -47,7 +47,7 @@ season.each do |game_record|
 
 			# Create stats record if the player exists
 			if player
-				SkaterStat.create(player_id: player.id, game_id: game.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
+				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
 	end
