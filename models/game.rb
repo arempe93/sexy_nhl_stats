@@ -28,4 +28,10 @@ class Game < ActiveRecord::Base
 	def winner
 		home_team_score > away_team_score ? home_team : away_team
 	end
+
+	def self.last(team, n = 1)
+		
+		games = Game.all.where "game_time < #{(DateTime.now.midnight + 3.hours).strftime('%F %T %z')} and (home_team_id = #{team.id} or away_team_id = #{team.id})"
+		games.last n
+	end
 end
