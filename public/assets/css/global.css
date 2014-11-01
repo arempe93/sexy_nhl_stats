@@ -23,6 +23,12 @@ h1, h2, h3, h4, h5, h6 {
 	border: none;
 }
 
+.navbar-brand {
+
+	font-family: 'Pacifico', 'Open Sans', sans-serif;
+	font-size: 24px;
+}
+
 .navbar-brand, .navbar-nav li a {
     line-height: 100px;
     height: 100px;
