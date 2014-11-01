@@ -1,9 +1,30 @@
 /* GLOBAL */
 
 body {
+	margin-top: 100px;
 	font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
+}
+
+/* JUMBOTRON */
+.jumbotron {
+
+	background-color: #323a45;
+	color: #ffffff;
+}
+
+/* NAVBAR */
+.navbar {
+
+	background-color: #ffffff;
+	border: none;
+}
+
+.navbar-brand, .navbar-nav li a {
+    line-height: 100px;
+    height: 100px;
+    padding-top: 0;
 }
