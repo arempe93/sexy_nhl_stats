@@ -9,6 +9,26 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
 }
 
+/* BUTTONS */
+.btn {
+
+	border: none;
+	padding: 12px 20px;
+}
+
+.btn.btn-primary {
+
+	background-color: #34495e;
+	color: #ffffff;
+
+	box-shadow: 0 3px 0 #22313f;
+}
+
+.btn.btn-primary:hover {
+
+	background-color: #22313f;
+}
+
 /* JUMBOTRON */
 .jumbotron {
 
@@ -41,6 +61,6 @@ h1, h2, h3, h4, h5, h6 {
 
 	color: #ffffff;
 
-	padding: 6px 12px;
-	margin-top: 9px;
+	padding: 9px 20px;
+	margin-top: 5px;
 }
