@@ -64,3 +64,12 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 9px 20px;
 	margin-top: 5px;
 }
+
+.navbar-nav li.donate a.btn:hover {
+
+	color: #ffffff;
+	background-color: #22313f;
+
+	padding: 9px 20px;
+	margin-top: 5px;
+}
