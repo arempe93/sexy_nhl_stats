@@ -49,6 +49,44 @@ h1, h2, h3, h4, h5, h6 {
 	color: #ffffff;
 }
 
+@media screen and (min-width: 768px) {
+
+	.jumbotron {
+
+		padding: 82px 0;
+	}
+
+	.jumbotron h1 {
+
+		font-size: 54px;
+	}
+}
+
+.jumbotron h1,
+.jumbotron h2,
+.jumbotron h3 {
+
+	font-weight: 700;
+}
+
+.jumbotron form .input-group {
+
+	margin-top: 50px;
+}
+
+.jumbotron form input {
+
+	height: 54px;
+
+	font-size: 18px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.jumbotron form .input-group-btn button {
+
+	height: 54px;
+}
+
 /* NAVBAR */
 .navbar {
 

@@ -1,5 +1,17 @@
-<div class="jumbotron">
+<div class="jumbotron" style="text-align:center;">
 	<div class="container">
-		<h1>Welcome home</h1>
+		<h1>Better hockey stats for dedicated fans</h1>
+		<p class="lead">Search for a team or any player</p>
+
+		<form method="POST" action="/search">
+			<div class="input-group">
+				<input type="text" name="query" id="query" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</div>
+		</form>
 	</div>
 </div>
