@@ -1,12 +1,21 @@
 /* GLOBAL */
 
 body {
-	margin-top: 110px;
 	font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Open Sans', sans-serif;
+}
+
+a {
+	color: #777777;
+}
+
+a:hover {
+
+	color: #333333;
+	text-decoration: none;
 }
 
 /* BUTTONS */
@@ -54,6 +63,11 @@ h1, h2, h3, h4, h5, h6 {
 	.jumbotron {
 
 		padding: 82px 0;
+	}
+
+	.jumbotron.slim {
+
+		padding: 46px 0;
 	}
 
 	.jumbotron h1 {
@@ -120,4 +134,27 @@ h1, h2, h3, h4, h5, h6 {
 
 	color: #ffffff;
 	background-color: #555555;
+}
+
+/* TEAM OVERVIEW */
+.team-overview {
+
+	padding-bottom: 35px;
+
+	width: 50%;
+}
+
+.team-overview .logo {
+
+	height: 64px;
+
+	float: left;
+
+	padding-right: 20px;
+}
+
+.team-overview .name {
+
+	line-height: 64px;
+
 }

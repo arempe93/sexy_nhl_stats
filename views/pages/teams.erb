@@ -1,0 +1,10 @@
+<div class="jumbotron slim" style="text-align: center;">
+	<h1>Teams</h1>
+	<p class="lead">All 30 NHL teams, with all their data</p>
+</div>
+
+<div class="container">
+	<% @teams.each do |team| %>
+		<%= partial :'teams/team_overview', locals: { team: team } %>
+	<% end %>
+</div>

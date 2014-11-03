@@ -31,6 +31,12 @@ class Team < ActiveRecord::Base
 		Game.all.where("home_team_id = #{id} or away_team_id = #{id}")
 	end
 
+	def logo_name
+		logo = name.gsub /\s/, ''
+
+		(city == 'Toronto' || city == 'Tampa Bay') ? logo + '_dark' : logo
+	end
+
 	# Class Functions
 	def self.search(query)
 		Team.find_by(abbv: query) || Team.find_by(name: query)

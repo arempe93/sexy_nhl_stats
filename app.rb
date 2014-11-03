@@ -10,3 +10,8 @@ require_all 'models'
 get '/'  do
 	erb :'pages/home'
 end
+
+get '/teams/?' do
+	@teams = Team.all.order(:city)
+	erb :'pages/teams'
+end
