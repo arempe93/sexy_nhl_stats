@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 12px 20px;
 }
 
-.btn.btn-primary {
+.btn.btn-blue {
 
 	background-color: #34495e;
 	color: #ffffff;
@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
 	box-shadow: 0 3px 0 #22313f;
 }
 
-.btn.btn-info {
+.btn.btn-grey {
 
 	background-color: #777777;
 	color: #ffffff;
@@ -32,14 +32,14 @@ h1, h2, h3, h4, h5, h6 {
 	box-shadow: 0 3px 0 #555555;
 }
 
-.btn.btn-info:hover {
-
-	background-color: #555555;
-}
-
-.btn.btn-primary:hover {
+.btn.btn-blue:hover {
 
 	background-color: #22313f;
+}
+
+.btn.btn-grey:hover {
+
+	background-color: #555555;
 }
 
 /* JUMBOTRON */
