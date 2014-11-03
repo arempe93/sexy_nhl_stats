@@ -31,7 +31,7 @@ class Game < ActiveRecord::Base
 
 	def self.last(team, n = 1)
 		
-		games = Game.all.where "game_time < #{(DateTime.now.midnight + 3.hours).strftime('%F %T %z')} and (home_team_id = #{team.id} or away_team_id = #{team.id})"
+		games = Game.all.where "game_time < '#{(DateTime.now.midnight + 3.hours).strftime('%F %T %z')}' and (home_team_id = #{team.id} or away_team_id = #{team.id})"
 		games.last n
 	end
 end
