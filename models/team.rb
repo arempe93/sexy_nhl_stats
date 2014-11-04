@@ -9,6 +9,8 @@
 #  abbv       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  conference :string(255)
+#  division   :string(255)
 #
 
 class Team < ActiveRecord::Base
