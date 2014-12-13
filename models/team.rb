@@ -34,7 +34,7 @@ class Team < ActiveRecord::Base
 	end
 
 	def all_played_games
-		Game.all.where("game_time < '#{(DateTime.now.midnight + 3.hours).strftime('%F %T %z')}' and (home_team_id = #{id} or away_team_id = #{id})")
+		Game.all.where("decision is not null and (home_team_id = #{id} or away_team_id = #{id})")
 	end
 
 	def games_played

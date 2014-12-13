@@ -1,15 +1,6 @@
-<div class="team-overview">
-	
-	<div class="logo">
-		<img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= team.logo_name.downcase %>_logo.png">
-	</div>
-
-	<div class="name">
-		<h1><%= "#{team.city} #{team.name}" %></h1>
-		<p class="lead">
-			<a href="">Stats</a> |
-			<a href="">Schedule</a> |
-			<a href="">Roster</a>
-		</p>
-	</div>
-</div>
+<tr>
+	<td><img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= team.logo_name.downcase %>_logo.png"></td>
+	<td><%= "#{team.city} #{team.name}" %></td>
+	<td><%= team.points %></td>
+	<td><%= "#{team.wins}-#{team.losses}-#{team.ot}" %></td>
+</tr>
