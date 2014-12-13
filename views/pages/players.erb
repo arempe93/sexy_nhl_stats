@@ -1,0 +1,10 @@
+<div class="jumbotron slim" style="text-align: center;">
+	<h1>Players</h1>
+	<p class="lead">All <%= @players.count %> NHL players, with all their stats</p>
+</div>
+
+<div class="container">
+	<% @players.each do |player| %>
+		<%= partial :'players/player_overview', locals: { player: player } %>
+	<% end %>
+</div>
