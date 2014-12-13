@@ -1,2 +1,5 @@
 # Ignore logging files
 /logs
+
+# Andrew is allergic to Macs
+.DS_Store

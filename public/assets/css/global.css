@@ -158,3 +158,17 @@ a:hover {
 	line-height: 64px;
 
 }
+
+.footer {
+
+	color: #AAAAAA;
+	text-align: center;
+}
+
+.statistic {
+
+	width: 75%;
+	margin: 0 auto;
+
+	text-align: center;
+}
