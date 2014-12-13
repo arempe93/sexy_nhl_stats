@@ -9,7 +9,7 @@
 		<div class="col-md-3" style="border-right: 1px solid #ccc;">
 			<%= partial :'layouts/statistic', locals: {number: Player.where(player_type: 'G').count, text: 'Goalies' } %>
 		</div>
-		<div class="col-md-3" style="border-right: 1px solid #ccc;">
+		<div class="col-md-3">
 			<%= partial :'layouts/statistic', locals: {number: Game.count, text: 'Game stats' } %>
 		</div>
 	</div>
