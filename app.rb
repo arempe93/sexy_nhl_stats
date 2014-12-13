@@ -7,6 +7,12 @@ require_relative 'config/environments'
 
 require_all 'models'
 
+helpers do
+	def humanize_number(number)
+		number.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse
+	end
+end
+
 get '/'  do
 	erb :'pages/home'
 end
