@@ -164,3 +164,21 @@ a:hover {
 	color: #AAAAAA;
 	text-align: center;
 }
+
+.statistic {
+
+	width: 75%;
+	margin: 0 auto;
+
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
+.stat {
+
+	padding-right: 15px;
+	padding-left: 15px;
+}
