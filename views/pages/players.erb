@@ -4,7 +4,11 @@
 </div>
 
 <div class="container">
-	<% @players.each do |player| %>
-		<%= partial :'players/player_overview', locals: { player: player } %>
-	<% end %>
+	<div class="row">
+		<% @players.each do |player| %>
+			<div class="col-md-6">
+				<%= partial :'players/player_overview', locals: { player: player } %>
+			</div>
+		<% end %>
+	</div>
 </div>
