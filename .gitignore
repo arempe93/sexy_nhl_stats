@@ -3,6 +3,7 @@
 
 # Andrew is allergic to Macs
 .DS_Store
+/db/.DS_Store
 
 # Let's not toss our db around
 .sql
