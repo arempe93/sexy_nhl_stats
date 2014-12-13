@@ -75,6 +75,10 @@ class Team < ActiveRecord::Base
 		(city == 'Toronto' || city == 'Tampa Bay') ? logo + '_dark' : logo
 	end
 
+	def light_logo_name
+		name.gsub /\s/, ''
+	end
+
 	# Class Functions
 	def self.search(query)
 		Team.find_by(abbv: query) || Team.find_by(name: query)

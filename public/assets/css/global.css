@@ -77,6 +77,11 @@ small {
 	color: #ffffff;
 }
 
+.jumbotron.gray {
+
+	background-color: #777777;
+}
+
 @media screen and (min-width: 768px) {
 
 	.jumbotron {

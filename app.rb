@@ -18,6 +18,11 @@ get '/teams/?' do
 	erb :'pages/teams'
 end
 
+get '/teams/:abbv/?' do
+	@team = Team.find_by abbv: params[:abbv]
+	erb :'teams/show'
+end
+
 # Players
 
 get '/players/?' do

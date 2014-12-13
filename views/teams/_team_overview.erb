@@ -1,6 +1,6 @@
 <tr>
 	<td><img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= team.logo_name.downcase %>_logo.png"></td>
-	<td><a class="no-style" href="/teams/<%= team.nhl_id %>"><%= "#{team.city} #{team.name}" %></a></td>
+	<td><a class="no-style" href="/teams/<%= team.abbv %>"><%= "#{team.city} #{team.name}" %></a></td>
 	<td><%= team.points %></td>
 	<td><%= "#{team.wins}-#{team.losses}-#{team.ot}" %></td>
 </tr>
