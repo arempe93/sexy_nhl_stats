@@ -34,4 +34,12 @@ class Player < ActiveRecord::Base
 	def self.search(query)
 		Player.find_by(name: query)
 	end
+
+	def position
+		player_type == 'S' ? "Skater" : "Goalie"
+	end
+
+	def team
+		Team.find(team_id).abbv
+	end
 end

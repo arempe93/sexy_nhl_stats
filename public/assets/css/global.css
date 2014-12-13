@@ -19,6 +19,12 @@ a:hover {
 	text-decoration: none;
 }
 
+small {
+
+	font-size: 14px;
+	font-family: 'Lato', sans-serif;
+}
+
 /* BUTTONS */
 .btn {
 
@@ -141,8 +147,6 @@ a:hover {
 .team-overview {
 
 	padding-bottom: 35px;
-
-	width: 50%;
 }
 
 .team-overview .logo {
