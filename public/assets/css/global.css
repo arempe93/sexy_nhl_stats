@@ -19,6 +19,18 @@ a:hover {
 	text-decoration: none;
 }
 
+a.no-style {
+
+	color: #333333;
+	text-decoration: none;
+}
+
+a.no-style:hover {
+
+	color: #777777;
+	text-decoration: none;
+}
+
 small {
 
 	font-size: 14px;
@@ -164,12 +176,14 @@ small {
 
 }
 
+/* FOOTER */
 .footer {
 
 	color: #AAAAAA;
 	text-align: center;
 }
 
+/* STATISTICS */
 .statistic {
 
 	width: 75%;
@@ -178,6 +192,7 @@ small {
 	text-align: center;
 }
 
+/* STANDINGS */
 .standings-table > tbody > tr > td {
 
 	vertical-align: middle;
