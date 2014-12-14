@@ -19,6 +19,18 @@ a:hover {
 	text-decoration: none;
 }
 
+a.no-style {
+
+	color: #333333;
+	text-decoration: none;
+}
+
+a.no-style:hover {
+
+	color: #777777;
+	text-decoration: none;
+}
+
 small {
 
 	font-size: 14px;
@@ -63,6 +75,11 @@ small {
 
 	background-color: #323a45;
 	color: #ffffff;
+}
+
+.jumbotron.gray {
+
+	background-color: #777777;
 }
 
 @media screen and (min-width: 768px) {
@@ -164,16 +181,25 @@ small {
 
 }
 
+/* FOOTER */
 .footer {
 
 	color: #AAAAAA;
 	text-align: center;
 }
 
+/* STATISTICS */
 .statistic {
 
 	width: 75%;
 	margin: 0 auto;
 
 	text-align: center;
+}
+
+/* STANDINGS */
+.standings-table > tbody > tr > td {
+
+	vertical-align: middle;
+	font-size: 24px;
 }

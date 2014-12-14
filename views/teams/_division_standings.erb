@@ -1,0 +1,22 @@
+<div class="panel panel-<%= color %>">
+	<div class="panel-heading">
+		<h3 class="panel-title"><%= division %></h3>
+	</div>
+
+	<table class="table standings-table">
+		<thead>
+			<tr>
+				<th>Logo</th>
+				<th>Team</th>
+				<th>Points</th>
+				<th>Record</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% Team.where(division: division).sort_by { |team| team.points }.reverse.each do |team| %>
+				<%= partial :'teams/team_overview', locals: { team: team } %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
