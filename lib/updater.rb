@@ -39,6 +39,26 @@ unstored_games.each do |game|
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
+	# Open scoreboard file
+	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
+	game_stats = JSON.parse(game_stats_file.read[10..-2])
+
+	### GAME UPDATES ###
+
+	# Get home and away scores
+	away_score = game_stats['a']['tot']['g']
+	home_score = game_stats['h']['tot']['g']
+
+	# Get game decision
+	periods_played = game_stats['p']
+	game_decision = periods_played == 3 ? 'F' : (periods_played == 4 ? 'OT' : 'SO')
+
+	# Update Game record
+	game.home_team_score = home_score
+	game.away_team_score = away_score
+	game.decision = game_decision
+	game.save
+
 	### PLAYER UPDATES ###
 
 	# Update players
