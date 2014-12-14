@@ -29,3 +29,15 @@ get '/players/:nhl_id/?' do
 	@player = Player.find_by nhl_id: params[:nhl_id]
 	erb :'players/show'
 end
+
+get '/legal' do
+	erb :'pages/legal'
+end
+
+get '/about' do
+	erb :'pages/about'
+end
+
+get '/contact' do
+	erb :'pages/contact'
+end
