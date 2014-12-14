@@ -1,10 +1,5 @@
 <div class="container">
-	<h1><%= @player.name %></h1>
-	<p class="lead">
-		<%= @player.position %> |
-		<%= @player.team %> |
-		<%= @player.sweater %>
-	</p>
+	<%= partial :'players/player_header', locals: { player: @player } %>
 
 	<h3>GAA</h3>
 

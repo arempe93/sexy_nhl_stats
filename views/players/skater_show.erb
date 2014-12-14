@@ -1,11 +1,5 @@
 <div class="container">
-	<img src="http://2.cdn.nhle.com/photos/mugs/<%= @player.nhl_id %>.jpg" />
-	<h1><%= @player.name %></h1>
-	<p class="lead">
-		<%= @player.position %> |
-		<%= @player.team %> |
-		<%= @player.sweater %>
-	</p>
+	<%= partial :'players/player_header', locals: { player: @player } %>
 
 	<h3>Goals</h3>
 	<p><%= @player.skater_stats.sum(:goals) %>
