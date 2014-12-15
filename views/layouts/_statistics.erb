@@ -4,7 +4,7 @@
 			<%= partial :'layouts/statistic', locals: {number: SkaterStat.count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Stat records' } %>
 		</div>
 		<div class="col-md-3" style="border-right: 1px solid #ccc;">
-			<%= partial :'layouts/statistic', locals: {number: Player.where(player_type: 'S').count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Players' } %>
+			<%= partial :'layouts/statistic', locals: {number: Player.where(player_type: 'S').count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Skaters' } %>
 		</div>
 		<div class="col-md-3" style="border-right: 1px solid #ccc;">
 			<%= partial :'layouts/statistic', locals: {number: Player.where(player_type: 'G').count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Goalies' } %>

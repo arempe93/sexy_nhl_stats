@@ -1,0 +1,8 @@
+<div class="container">
+	<%= partial :'players/player_header', locals: { player: @player } %>
+
+	<h3>Goals</h3>
+	<p><%= @player.skater_stats.sum(:goals) %>
+	<h3>Assists</h3>
+	<p><%= @player.skater_stats.sum(:assists) %>
+</div>

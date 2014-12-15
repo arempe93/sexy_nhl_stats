@@ -6,3 +6,11 @@
 		</h1>
 	</div>
 </div>
+<div class="container">
+	<h1>Roster</h1>
+	<% @team.players.sort_by { |player| player.sweater }.each do |player| %>
+		<div class="col-md-6">
+			<%= partial :'players/player_overview', locals: { player: player } %>
+		</div>
+	<% end %>
+</div>

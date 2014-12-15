@@ -32,7 +32,11 @@ end
 
 get '/players/:nhl_id/?' do
 	@player = Player.find_by nhl_id: params[:nhl_id]
-	erb :'players/show'
+	#if @player.player_type == 'S'
+	erb :'players/skater_show'
+	#else
+	#	erb :'players/goalie_show'
+	#end
 end
 
 get '/legal' do
