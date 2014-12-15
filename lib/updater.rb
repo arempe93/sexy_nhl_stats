@@ -18,11 +18,8 @@ $stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
 # Log time ran
 puts "======== Updated at #{DateTime.now} ========"
 
-# Find all games played but not stored
-unstored_games = Game.where("home_team_score is null AND date_trunc('day', game_time) < '#{Date.today}'").order(:nhl_id)
-
 # Loop through all unstored games
-unstored_games.each do |game|
+Game.unstored_games.each do |game|
 
 	# Log game
 	puts "Opening game: #{game.nhl_id}"
@@ -58,7 +55,7 @@ unstored_games.each do |game|
 	game.away_team_score = away_score
 	game.decision = game_decision
 	game.save
-end
+
 	### PLAYER UPDATES ###
 
 	# Update players
