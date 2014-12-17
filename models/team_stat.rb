@@ -31,4 +31,8 @@ class TeamStat < ActiveRecord::Base
 
 		numbers.first.to_i / numbers.last.to_i
 	end
+
+	def net_posession
+		takeaways - giveaways
+	end
 end
