@@ -29,4 +29,8 @@ class GoalieStat < ActiveRecord::Base
 	def save_percentage
 		shots_faced.to_f / saves.to_f
 	end
+
+	def goals_against_average
+		goals_against.to_f / (toi.to_f / 60)
+	end
 end
