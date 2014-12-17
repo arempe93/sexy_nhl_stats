@@ -65,6 +65,14 @@ class Team < ActiveRecord::Base
 		ot
 	end
 
+	def row
+		row = 0
+		all_played_games.each do |game|
+			row += 1 if game.winner.id == id and game.decision != 'SO'
+		end
+		row
+	end
+
 	def points
 		wins * 2 + ot
 	end
