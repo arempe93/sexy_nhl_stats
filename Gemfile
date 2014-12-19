@@ -17,6 +17,9 @@ gem 'pg'
 # Using require all for easy local Sinatra requires
 gem 'require_all'
 
+# For some commenting assistance
+gem 'annotate'
+
 group :development do
 	# Using shotgun for development friendly server testing
 	gem 'shotgun'
