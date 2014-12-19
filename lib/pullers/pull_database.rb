@@ -1,28 +1,20 @@
-# Updates games played since last update
-
 # Require
 require 'rubygems'
 require 'json'
 require 'open-uri'
 
 require 'sinatra/activerecord'
-require_relative '../models/team'
-require_relative '../models/player'
-require_relative '../models/game'
-require_relative '../models/skater_stat'
-require_relative '../models/goalie_stat'
+require_relative '../../models/team'
+require_relative '../../models/player'
+require_relative '../../models/game'
+require_relative '../../models/skater_stat'
+require_relative '../../models/goalie_stat'
+require_relative '../../models/team_stat'
 
-# Redirect output to log file
-$stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
+# Loop through all played games
+Game.all_played_games.each do |game|
 
-# Log time ran
-puts "======== Updated at #{DateTime.now} ========"
-
-# Loop through all unstored games
-Game.unstored_games.each do |game|
-
-	# Log game
-	puts "Opening game: #{game.nhl_id}"
+	puts "Analyzing game: #{game.nhl_id}"
 
 	# Get teams
 	home_team = Team.find game.home_team_id
@@ -36,29 +28,8 @@ Game.unstored_games.each do |game|
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
-	# Open scoreboard file
-	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
-	game_stats = JSON.parse(game_stats_file.read[10..-2])
+	### GET SKATERS ###
 
-	### GAME UPDATES ###
-
-	# Get home and away scores
-	away_score = game_stats['a']['tot']['g']
-	home_score = game_stats['h']['tot']['g']
-
-	# Get game decision
-	periods_played = game_stats['p']
-	game_decision = periods_played == 3 ? 'F' : (periods_played == 4 ? 'OT' : 'SO')
-
-	# Update Game record
-	game.home_team_score = home_score
-	game.away_team_score = away_score
-	game.decision = game_decision
-	game.save
-
-	### PLAYER UPDATES ###
-
-	# Update players
 	stats['plays']['play'].each do |play|
 
 		# Get the player id
@@ -77,7 +48,8 @@ Game.unstored_games.each do |game|
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
 	end
 
-	# Update goalies
+	### GET GOALIES ###
+
 	stats['plays']['play'].each do |play|
 
 		# Skip if no goalie information present
@@ -87,14 +59,18 @@ Game.unstored_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
-		goalie_nhl_team_id = play['teamid'] == home_team.nhl_id ? away_team.nhl_id : home_team.nhl_id
-		goalie_team_id = goalie_nhl_team_id == home_team.nhl_id ? home_team.id : away_team.id
+		goalie_nhl_team_id = play['teamid'] == home_team_id ? away_team_id : home_team_id
+		goalie_team_id = goalie_nhl_team_id == home_team_id ? home_team.id : away_team.id
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
 
 		# Create goalie record
 		goalie = Player.new(nhl_id: goalie_nhl_id, team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
+
+		# Open gcbx file
+		gcbx_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcbx.jsonp")
+		gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 		# Handle multiple goaltender situation for this game
 		goalie_team_name = goalie_team_id == home_team.id ? 'home' : 'away'
@@ -136,9 +112,8 @@ Game.unstored_games.each do |game|
 		goalie.save
 	end
 
-	### STATS ###
+	### GET STATS ###
 
-	# Loop through home and away rosters
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
@@ -154,9 +129,6 @@ Game.unstored_games.each do |game|
 			end
 		end
 
-		# Log skater stats
-		puts "Created #{SkaterStat.where(game_id: game.id).count} skater stats"
-
 		# Retrieve goalie stats
 		roster_team[1]['goalies'].each do |record|
 			goalie = Player.find_by(team_id: roster_team_id, sweater: record['num'])
@@ -166,8 +138,12 @@ Game.unstored_games.each do |game|
 				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: "00:" + record['toi'])
 			end
 		end
-
-		# Log goalie stats
-		puts "Created #{GoalieStat.where(game_id: game.id).count} skater stats\n\n"
 	end
+
+	### LOGGING ###
+
+	puts "Skaters: #{Player.where(player_type: 'S').count}"
+	puts "Stats: #{SkaterStat.count}\n\n"
+	puts "Goalies: #{Player.where(player_type: 'G').count}"
+	puts "Stats: #{GoalieStat.count}"
 end
