@@ -17,8 +17,8 @@ Game.all_played_games.each do |game|
 	puts "Analyzing game: #{game.nhl_id}"
 
 	# Get teams
-	home_team = Team.find game.home_team_id
-	away_team = Team.find game.away_team_id
+	home_team = Team.find(game.home_team_id)
+	away_team = Team.find(game.away_team_id)
 
 	# Open playbyplay file
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
