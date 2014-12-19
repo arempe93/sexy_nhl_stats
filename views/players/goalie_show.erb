@@ -1,7 +1,32 @@
 <div class="container">
 	<%= partial :'players/player_header', locals: { player: @player } %>
 
-	<h3>GAA</h3>
+	<h3>Stats</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Game</th>
+				<th>Date</th>
+				<th>Opponent</th>
+				<th>Goals Allowed</th>
+				<th>Shots</th>
+				<th>Time on Ice</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @player.goalie_stats.each do |stat| %>
+				<tr>
+					<td><%= stat.game_id %></td>
+					<td>date</td>
+					<td>opp</td>
+					<td><%= stat.goals_against %></td>
+					<td><%= stat.shots_faced %></td>
+					<td><%= stat.toi %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
 
 	<h3>Save Percentages</h3>
 
