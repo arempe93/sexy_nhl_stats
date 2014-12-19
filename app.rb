@@ -40,8 +40,8 @@ get '/players/:nhl_id/?' do
 end
 
 get '/leaders' do
-	@players = Player.all.where('player_type' == 'S')
-	@goalies = Player.all.where('player_type' == 'G')
+	@players = Player.where(player_type: 'S')
+	@goalies = Player.where(player_type: 'G')
 	erb :'pages/leaders'
 end
 
