@@ -20,7 +20,7 @@ Game.all_played_games.each do |game|
 	home_team = Team.find(game.home_team_id)
 	away_team = Team.find(game.away_team_id)
 
-	# Open playbyplay file
+	# Open playbyplay file 
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
 	stats = JSON.parse(stats_file.read)['data']['game']
 
@@ -59,8 +59,10 @@ Game.all_played_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
+		puts "Looking for goalie's team"
 		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
 		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team.id : away_team.id)
+		puts "found goalie team"
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
