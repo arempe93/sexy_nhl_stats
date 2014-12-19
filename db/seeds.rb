@@ -27,4 +27,4 @@ bluejackets.city = 'Columbus'		# was Columbus Blue
 bluejackets.save
 
 # Re-enable database output
-ActiveRecord::Base.loger = old_logger
+ActiveRecord::Base.logger = old_logger
