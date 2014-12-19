@@ -27,11 +27,16 @@ class GoalieStat < ActiveRecord::Base
 
 	# Functions
 	def save_percentage
-		shots_faced.to_f / saves.to_f
+		(saves.to_f / shots_faced.to_f * 100).round(2)
 	end
 
 	def goals_against_average
-		goals_against.to_f / (toi.to_f / 60)
+		if toi != nil
+			time = toi.min + (toi.sec/60)
+			((goals_against.to_f / time) * 60).round(2)
+		else
+			0.0
+		end
 	end
 
 	def time_on_ice

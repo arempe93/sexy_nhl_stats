@@ -10,6 +10,8 @@
 				<th>Opponent</th>
 				<th>Goals Allowed</th>
 				<th>Shots</th>
+				<th>GAA</th>
+				<th>Save Pct</th>
 				<th>Time on Ice</th>
 			</tr>
 		</thead>
@@ -22,6 +24,8 @@
 					<td>opp</td>
 					<td><%= stat.goals_against %></td>
 					<td><%= stat.shots_faced %></td>
+					<td><%= stat.goals_against_average %></td>
+					<td><%= stat.save_percentage %></td>
 					<td><%= stat.time_on_ice %></td>
 				</tr>
 			<% end %>
