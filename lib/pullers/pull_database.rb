@@ -42,7 +42,7 @@ Game.all_played_games.each do |game|
 		next if play['type'] == 'Penalty' and play['pid3']
 
 		# Get the team the player was on
-		player_team_id = play['teamid'] == home_team.nhl_id ? home_team.id : away_team.id
+		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team.id : away_team.id)
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
@@ -59,8 +59,8 @@ Game.all_played_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
-		goalie_nhl_team_id = play['teamid'] == home_team_id ? away_team_id : home_team_id
-		goalie_team_id = goalie_nhl_team_id == home_team_id ? home_team.id : away_team.id
+		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
+		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team.id : away_team.id)
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
@@ -73,7 +73,7 @@ Game.all_played_games.each do |game|
 		gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 		# Handle multiple goaltender situation for this game
-		goalie_team_name = goalie_team_id == home_team.id ? 'home' : 'away'
+		goalie_team_name = ((goalie_team_id == home_team.id) ? 'home' : 'away')
 
 		if gcbx['rosters'][goalie_team_name]['goalies'].length > 1
 
