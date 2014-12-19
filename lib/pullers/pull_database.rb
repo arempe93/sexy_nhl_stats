@@ -16,9 +16,11 @@ Game.all_played_games.each do |game|
 
 	puts "Analyzing game: #{game.nhl_id}"
 
-	# Get teams
-	home_team = Team.find(game.home_team_id)
-	away_team = Team.find(game.away_team_id)
+	# Get teams from game id
+	home_team_id = game.home_team_id
+	away_team_id = game.away_team_id
+	home_team = Team.find(home_team_id)
+	away_team = Team.find(away_team_id)
 
 	# Open playbyplay file 
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
@@ -59,10 +61,8 @@ Game.all_played_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
-		puts "Looking for goalie's team"
 		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
 		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team.id : away_team.id)
-		puts "found goalie team"
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
@@ -71,7 +71,7 @@ Game.all_played_games.each do |game|
 		goalie = Player.new(nhl_id: goalie_nhl_id, team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
 
 		# Open gcbx file
-		gcbx_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcbx.jsonp")
+		gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 		gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 		# Handle multiple goaltender situation for this game
@@ -94,7 +94,7 @@ Game.all_played_games.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\n\n\n\n\nGAME ID: #{id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
+			puts "\n\n\n\n\n\nGAME ID: #{game.nhl_id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
 
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
