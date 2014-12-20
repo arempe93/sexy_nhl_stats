@@ -35,11 +35,11 @@ season.each do |game|
 	# Get the game date
 	game_date = DateTime.parse game['est']
 
-	# Create initial Game record
-	game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
-
 	# If this game has already been played
 	if DateTime.now > game_date
+	
+		# Create initial Game record
+		game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
 
 		# Open scoreboard file
 		game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
@@ -57,8 +57,24 @@ season.each do |game|
 		game.home_team_score = home_score
 		game.away_team_score = away_score
 		game.decision = game_decision
-	end
+		
+		# Update team records
+		winner = (home_score > away_score ? home_team : away_team)
+		loser = (home_score > away_score ? away_team : home_team)
 
-	# Save Game record
-	game.save
+		# Increment proper values
+		winner.wins += 1
+		if game_decision == 'F'
+			loser.losses += 1
+		else
+			loser.ot += 1
+		end
+
+		winner.row += 1 if game_decision != 'SO'
+
+		# Save changes
+		winner.save
+		loser.save
+		game.save
+	end
 end

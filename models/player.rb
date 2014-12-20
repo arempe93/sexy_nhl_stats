@@ -39,7 +39,7 @@ class Player < ActiveRecord::Base
 		player_type == 'S' ? "Skater" : "Goalie"
 	end
 
-	def team
+	def team_abbreviation
 		Team.find(team_id).abbv
 	end
 end

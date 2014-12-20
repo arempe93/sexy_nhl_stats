@@ -1,35 +1,28 @@
-# Updates games played since last update
-
 # Require
 require 'rubygems'
 require 'json'
 require 'open-uri'
 
 require 'sinatra/activerecord'
-require_relative '../models/team'
-require_relative '../models/player'
-require_relative '../models/game'
-require_relative '../models/skater_stat'
-require_relative '../models/goalie_stat'
-require_relative '../models/team_stat'
+require_relative '../../models/team'
+require_relative '../../models/player'
+require_relative '../../models/game'
+require_relative '../../models/skater_stat'
+require_relative '../../models/goalie_stat'
+require_relative '../../models/team_stat'
 
-# Redirect output to log file
-$stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
+# Loop through all played games
+Game.all_played_games.each do |game|
 
-# Log time ran
-puts "======== Updated at #{DateTime.now} ========"
+	puts "Analyzing game: #{game.nhl_id}"
 
-# Loop through all unstored games
-Game.unstored_games.each do |game|
+	# Get teams from game id
+	home_team_id = game.home_team_id
+	away_team_id = game.away_team_id
+	home_team = Team.find(home_team_id)
+	away_team = Team.find(away_team_id)
 
-	# Log game
-	puts "Opening game: #{game.nhl_id}"
-
-	# Get teams
-	home_team = Team.find(game.home_team_id)
-	away_team = Team.find(game.away_team_id)
-
-	# Open playbyplay file
+	# Open playbyplay file 
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
 	stats = JSON.parse(stats_file.read)['data']['game']
 
@@ -37,53 +30,24 @@ Game.unstored_games.each do |game|
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
-	# Open scoreboard file
-	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
-	game_stats = JSON.parse(game_stats_file.read[10..-2])
+	### RECORD TEAM STATS ###
 
-	### GAME UPDATES ###
+	# Retrieve home team stats
+	home_stats = gcbx['teamStats']['home']
+	home_shots = gcbx['shotSummary'].last['shots'][0]['hShotTot']
 
-	# Get home and away scores
-	away_score = game_stats['a']['tot']['g']
-	home_score = game_stats['h']['tot']['g']
+	# these tables dont exist yet... heh
+	TeamStat.create(team_id: home_team_id, game_id: game.nhl_id, shots: home_shots, blocks: home_stats['hBlock'], pim: home_stats['hPIM'], hits: home_stats['hHits'], fow: home_stats['hFOW'], takeaways: home_stats['hTake'], giveaways: home_stats['hGive'], penalties: home_stats['hPP'])
 
-	# Get game decision
-	periods_played = game_stats['p']
-	game_decision = periods_played == 3 ? 'F' : (periods_played == 4 ? 'OT' : 'SO')
+	# Retrieve away team stats
+	away_stats = gcbx['teamStats']['away']
+	away_shots = gcbx['shotSummary'].last['shots'][0]['aShotTot']
 
-	# Update Game record
-	game.home_team_score = home_score
-	game.away_team_score = away_score
-	game.decision = game_decision
-	game.save
+	# these tables dont exist yet... heh
+	TeamStat.create(team_id: away_team_id, game_id: game.nhl_id, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
-	### TEAM STATS ###
+	### GET SKATERS ###
 
-	# Update team records
-	winner = (home_score > away_score ? home_team : away_team)
-	loser = (home_score > away_score ? away_team : home_team)
-
-	# Increment proper values
-	winner.wins += 1
-	if game_decision == 'F'
-		loser.losses += 1
-	else
-		loser.ot += 1
-	end
-
-	winner.row += 1 if game_decision != 'SO'
-
-	# Save changes
-	winner.save
-	loser.save
-
-	# Update team stats
-
-	#### PUT TEAM STAT STUFF IN UPDATER HERE!!! ####
-
-	### PLAYER UPDATES ###
-
-	# Update players
 	stats['plays']['play'].each do |play|
 
 		# Get the player id
@@ -96,13 +60,14 @@ Game.unstored_games.each do |game|
 		next if play['type'] == 'Penalty' and play['pid3']
 
 		# Get the team the player was on
-		player_team_id = play['teamid'] == home_team.nhl_id ? home_team.id : away_team.id
+		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team.id : away_team.id)
 
 		# Get player information
-		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+		Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
 	end
 
-	# Update goalies
+	### GET GOALIES ###
+
 	stats['plays']['play'].each do |play|
 
 		# Skip if no goalie information present
@@ -112,8 +77,8 @@ Game.unstored_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
-		goalie_nhl_team_id = play['teamid'] == home_team.nhl_id ? away_team.nhl_id : home_team.nhl_id
-		goalie_team_id = goalie_nhl_team_id == home_team.nhl_id ? home_team.id : away_team.id
+		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
+		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team.id : away_team.id)
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
@@ -121,8 +86,12 @@ Game.unstored_games.each do |game|
 		# Create goalie record
 		goalie = Player.new(nhl_id: goalie_nhl_id, team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
 
+		# Open gcbx file
+		gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
+		gcbx = JSON.parse(gcbx_file.read[10..-2])
+
 		# Handle multiple goaltender situation for this game
-		goalie_team_name = goalie_team_id == home_team.id ? 'home' : 'away'
+		goalie_team_name = ((goalie_team_id == home_team.id) ? 'home' : 'away')
 
 		if gcbx['rosters'][goalie_team_name]['goalies'].length > 1
 
@@ -141,7 +110,7 @@ Game.unstored_games.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\n\n\n\n\nGAME ID: #{id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
+			puts "\n\n\n\n\n\nGAME ID: #{game.nhl_id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
 
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
@@ -161,9 +130,8 @@ Game.unstored_games.each do |game|
 		goalie.save
 	end
 
-	### SKATER AND GOALIE STATS ###
+	### GET SKATER AND GOALIE STATS ###
 
-	# Loop through home and away rosters
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
@@ -179,9 +147,6 @@ Game.unstored_games.each do |game|
 			end
 		end
 
-		# Log skater stats
-		puts "Created #{SkaterStat.where(game_id: game.id).count} skater stats"
-
 		# Retrieve goalie stats
 		roster_team[1]['goalies'].each do |record|
 			goalie = Player.find_by(team_id: roster_team_id, sweater: record['num'])
@@ -191,8 +156,12 @@ Game.unstored_games.each do |game|
 				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: "00:" + record['toi'])
 			end
 		end
-
-		# Log goalie stats
-		puts "Created #{GoalieStat.where(game_id: game.id).count} skater stats\n\n"
 	end
+
+	### LOGGING ###
+
+	puts "Skaters: #{Player.where(player_type: 'S').count}"
+	puts "Stats: #{SkaterStat.count}\n\n"
+	puts "Goalies: #{Player.where(player_type: 'G').count}"
+	puts "Stats: #{GoalieStat.count}"
 end

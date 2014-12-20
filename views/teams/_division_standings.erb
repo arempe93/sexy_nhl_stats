@@ -16,7 +16,7 @@
 
 		<tbody>
 			<% Team.where(division: division).sort_by { |team| [team.points, -team.games_played, team.row] }.reverse.each do |team| %>
-				<%= partial :'teams/team_overview', locals: { team: team } %>
+				 <%= partial :'teams/team_overview', locals: { team: team } %>
 			<% end %>
 		</tbody>
 	</table>
