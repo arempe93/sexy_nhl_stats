@@ -114,7 +114,7 @@ Game.all_played_games.each do |game|
 		goalie.save
 	end
 
-	### GET STATS ###
+	### GET SKATER AND GOALIE STATS ###
 
 	gcbx['rosters'].each do |roster_team|
 

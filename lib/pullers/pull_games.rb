@@ -75,8 +75,6 @@ season.each do |game|
 		# Save changes
 		winner.save
 		loser.save
-
-		# Save Game record
 		game.save
 	end
 end

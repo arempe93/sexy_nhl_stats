@@ -20,9 +20,9 @@ Pullers are how we get all our stats. Now there are a lot of stats and it is a l
 ```
 rake db:reset
 ```
-will clear your entire database and run ```"/lib/pull_all.rb"``` which in turn will run ```"/lib/pullers/pull_teams.rb", "/lib/pullers/pull_games.rb", and "/lib/pullers/pull_database.rb"``` in that order. 
+will clear your entire database and run ```/lib/pull_all.rb``` which in turn will run ```/lib/pullers/pull_teams.rb```, ```/lib/pullers/pull_games.rb```, and ```/lib/pullers/pull_database.rb``` in that order. The last thing run will be ```/lib/divisions.rb``` which just tells the database to which division each team belongs.
 
 
-pull_teams.rb: Populate Teams table with every NHL team and relevant information.
-pull_games.rb: Populate Games table with every NHL game *that has been played so far*.
-pull_database.rb: Where all the magic happens. Starts by finding all skaters, and goalies to play in a particular game, then logs their stats for that specific game. Because everything happens on a per game basis, all stats are recorded based on the game, not a sum or lump total for the season. 
++ pull_teams.rb: Populate Teams table with every NHL team and relevant information.
++ pull_games.rb: Populate Games table with every NHL game *that has been played so far*. Also responsible for updating team records with proper win/loss information.
++ pull_database.rb: Where all the magic happens. Starts by finding all skaters, and goalies to play in a particular game, then logs their stats for that specific game. Because everything happens on a per game basis, all stats are recorded based on the game, not a sum or lump total for the season. 
