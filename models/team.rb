@@ -11,6 +11,10 @@
 #  updated_at :datetime
 #  conference :string(255)
 #  division   :string(255)
+#  wins       :integer          default(0)
+#  losses     :integer          default(0)
+#  ot         :integer          default(0)
+#  row        :integer          default(0)
 #
 
 class Team < ActiveRecord::Base
@@ -52,38 +56,6 @@ class Team < ActiveRecord::Base
 	end
 
 	# Stat functions
-	def wins
-		wins = 0
-		all_played_games.each do |game|
-			wins += 1 if game.winner.id == id
-		end
-		wins
-	end
-
-	def losses
-		losses = 0
-		all_played_games.each do |game|
-			losses += 1 if game.winner.id != id and game.decision == 'F'
-		end
-		losses
-	end
-
-	def ot
-		ot = 0
-		all_played_games.each do |game|
-			ot += 1 if game.winner.id != id and (game.decision == 'OT' or game.decision == 'SO') 
-		end
-		ot
-	end
-
-	def row
-		row = 0
-		all_played_games.each do |game|
-			row += 1 if game.winner.id == id and game.decision != 'SO'
-		end
-		row
-	end
-
 	def points
 		wins * 2 + ot
 	end
