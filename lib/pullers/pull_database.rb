@@ -142,7 +142,7 @@ Game.all_played_games.each do |game|
 			player = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
 			# Create stats record if the player exists
-			if player
+			if player and record['toi'] != "00:00"
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
