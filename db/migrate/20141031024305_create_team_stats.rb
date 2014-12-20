@@ -11,6 +11,7 @@ class CreateTeamStats < ActiveRecord::Migration
 			t.integer :takeaways
 			t.integer :giveaways
 			t.string :penalties
+			t.timestamps
 		end
 	end
 end
