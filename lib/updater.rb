@@ -57,24 +57,6 @@ Game.unstored_games.each do |game|
 	game.decision = game_decision
 	game.save
 
-	# Update team records
-	winner = (home_score > away_score ? home_team : away_team)
-	loser = (home_score > away_score ? away_team : home_team)
-
-	# Increment proper values
-	winner.wins += 1
-	if game_decision == 'F'
-		loser.losses += 1
-	else
-		loser.ot += 1
-	end
-
-	winner.row += 1 if game_decision != 'SO'
-
-	# Save changes
-	winner.save
-	loser.save
-
 	### PLAYER UPDATES ###
 
 	# Update players

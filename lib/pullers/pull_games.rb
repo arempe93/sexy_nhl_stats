@@ -58,6 +58,24 @@ season.each do |game|
 		game.away_team_score = away_score
 		game.decision = game_decision
 		
+		# Update team records
+		winner = (home_score > away_score ? home_team : away_team)
+		loser = (home_score > away_score ? away_team : home_team)
+
+		# Increment proper values
+		winner.wins += 1
+		if game_decision == 'F'
+			loser.losses += 1
+		else
+			loser.ot += 1
+		end
+
+		winner.row += 1 if game_decision != 'SO'
+
+		# Save changes
+		winner.save
+		loser.save
+
 		# Save Game record
 		game.save
 	end
