@@ -26,8 +26,8 @@ Game.unstored_games.each do |game|
 	puts "Opening game: #{game.nhl_id}"
 
 	# Get teams
-	home_team = Team.find game.home_team_id
-	away_team = Team.find game.away_team_id
+	home_team = Team.find(game.home_team_id)
+	away_team = Team.find(game.away_team_id)
 
 	# Open playbyplay file
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
@@ -56,6 +56,30 @@ Game.unstored_games.each do |game|
 	game.away_team_score = away_score
 	game.decision = game_decision
 	game.save
+
+	### TEAM STATS ###
+
+	# Update team records
+	winner = (home_score > away_score ? home_team : away_team)
+	loser = (home_score > away_score ? away_team : home_team)
+
+	# Increment proper values
+	winner.wins += 1
+	if game_decision == 'F'
+		loser.losses += 1
+	else
+		loser.ot += 1
+	end
+
+	winner.row += 1 if game_decision != 'SO'
+
+	# Save changes
+	winner.save
+	loser.save
+
+	# Update team stats
+
+	#### PUT TEAM STAT STUFF IN UPDATER HERE!!! ####
 
 	### PLAYER UPDATES ###
 
@@ -137,7 +161,7 @@ Game.unstored_games.each do |game|
 		goalie.save
 	end
 
-	### STATS ###
+	### SKATER AND GOALIE STATS ###
 
 	# Loop through home and away rosters
 	gcbx['rosters'].each do |roster_team|
