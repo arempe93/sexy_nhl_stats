@@ -30,6 +30,22 @@ Game.all_played_games.each do |game|
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
+	### RECORD TEAM STATS ###
+
+	# Retrieve home team stats
+	home_stats = gcbx['teamStats']['home']
+	home_shots = gcbx['shotSummary'].last['shots'][0]['hShotTot']
+
+	# these tables dont exist yet... heh
+	TeamStat.create(team_id: home_team_id, game_id: game.nhl_id, shots: home_shots, blocks: home_stats['hBlock'], pim: home_stats['hPIM'], hits: home_stats['hHits'], fow: home_stats['hFOW'], takeaways: home_stats['hTake'], giveaways: home_stats['hGive'], penalties: home_stats['hPP'])
+
+	# Retrieve away team stats
+	away_stats = gcbx['teamStats']['away']
+	away_shots = gcbx['shotSummary'].last['shots'][0]['aShotTot']
+
+	# these tables dont exist yet... heh
+	TeamStat.create(team_id: away_team_id, game_id: game.nhl_id, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
+
 	### GET SKATERS ###
 
 	stats['plays']['play'].each do |play|
@@ -47,7 +63,7 @@ Game.all_played_games.each do |game|
 		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team.id : away_team.id)
 
 		# Get player information
-		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+		Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
 	end
 
 	### GET GOALIES ###
@@ -114,7 +130,7 @@ Game.all_played_games.each do |game|
 		goalie.save
 	end
 
-	### GET STATS ###
+	### GET SKATER AND GOALIE STATS ###
 
 	gcbx['rosters'].each do |roster_team|
 

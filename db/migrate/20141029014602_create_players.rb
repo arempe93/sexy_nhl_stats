@@ -6,6 +6,7 @@ class CreatePlayers < ActiveRecord::Migration
 			t.string :name
 			t.integer :sweater
 			t.string :player_type
+			t.timestamps
 		end
 	end
 end
