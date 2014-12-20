@@ -1,5 +1,5 @@
-class CreateTeamStats < ActiveRecord::Migration
-	def change
+class CreateTeamStatsTable < ActiveRecord::Migration
+  	def change
 		create_table :team_stats do |t|
 			t.integer :team_id
 			t.integer :game_id
