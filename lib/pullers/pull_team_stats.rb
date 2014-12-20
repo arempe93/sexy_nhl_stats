@@ -23,11 +23,16 @@ end
 season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
 season = JSON.parse season_file.read
 
+# Current point in season
+current_point = 2014020473
+
 # Loop through all games
 season.each do |game_record|
 
 	# Get game id
 	id = game_record['id']
+
+	break if id >= current_point
 
 	# Limit loop
 	next unless DateTime.now > DateTime.parse(game_record['est'])
