@@ -47,32 +47,6 @@ season.each do |game_record|
 	# Open stats file
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
-
-	# Record winner and loser
-	away_score = game_stats['a']['tot']['g']
-	home_score = game_stats['h']['tot']['g']
-	periods_played = game_stats['p']	
-	game_decision = periods_played == 3 ? 'F' : (periods_played == 4 ? 'OT' : 'SO')	
-	home_team = Team.find_by(id: home_id)
-	away_team = Team.find_by(id: away_id)
-
-	# Get the winner and loser
-	winner = (home_score > away_score ? home_team : away_team)
-	loser = (home_score > away_score ? away_team : home_team)
-
-	# Increment proper values
-	winner.wins += 1
-	if game_decision == 'F'
-		loser.losses += 1
-	else
-		loser.ot += 1
-	end
-
-	winner.row += 1 if game_decision != 'SO'
-
-	# Save changes
-	winner.save
-	loser.save
 	
 	# Retrieve home team stats
 	home_stats = gcbx['teamStats']['home']
