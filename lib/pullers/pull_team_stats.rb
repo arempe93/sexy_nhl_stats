@@ -32,7 +32,7 @@ season.each do |game_record|
 	# Get game id
 	id = game_record['id']
 
-	break if id >= current_point
+	break if id == current_point
 
 	# Limit loop
 	next unless DateTime.now > DateTime.parse(game_record['est'])
@@ -56,9 +56,11 @@ season.each do |game_record|
 	home_team = Team.find_by(id: home_id)
 	away_team = Team.find_by(id: away_id)
 
+	# Get the winner and loser
 	winner = (home_score > away_score ? home_team : away_team)
 	loser = (home_score > away_score ? away_team : home_team)
 
+	# Increment proper values
 	winner.wins += 1
 	if game_decision == 'F'
 		loser.losses += 1
@@ -66,6 +68,9 @@ season.each do |game_record|
 		loser.ot += 1
 	end
 
+	winner.row += 1 if game_decision != 'SO'
+
+	# Save changes
 	winner.save
 	loser.save
 	
