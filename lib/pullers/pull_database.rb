@@ -139,20 +139,28 @@ Game.all_played_games.each do |game|
 		
 		# Retrieve skater stats
 		roster_team[1]['skaters'].each do |record|
+			
+			# Skip if they never played
+			next if record['toi'] == "00:00"
+
 			player = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
 			# Create stats record if the player exists
-			if player and record['toi'] != "00:00"
+			if player
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
 
 		# Retrieve goalie stats
 		roster_team[1]['goalies'].each do |record|
+
+			# Skip if they never played
+			next if record['toi'] == "00:00"
+
 			goalie = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
 			# Create stats record if the goalie exists
-			if goalie and record['toi'] != "00:00"
+			if goalie
 				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: "00:" + record['toi'])
 			end
 		end
