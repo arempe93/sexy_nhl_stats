@@ -44,6 +44,6 @@ Each players page for now will just show a table of all their games and statisti
 Creators
 --------
 
-This project is made entirely by Chris Celi and Andrew Rempe. We would like to thank the NHL for not hiding their JSON files though. We found them publically available and we assume they are free to use as such. :)
+This project is made entirely by [Chris Celi](www.github.com/celic) and [Andrew Rempe](www.github.com/arempe93). We would like to thank the NHL for not hiding their JSON files though. We found them publically available and we assume they are free to use as such. :)
 
 Thanks!
