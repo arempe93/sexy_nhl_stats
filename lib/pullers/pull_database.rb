@@ -63,7 +63,7 @@ Game.all_played_games.each do |game|
 		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team.id : away_team.id)
 
 		# Get player information
-		Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
 	end
 
 	### GET GOALIES ###
