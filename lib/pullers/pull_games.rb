@@ -45,7 +45,7 @@ season.each do |game|
 	game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
 	
 	# If this game has already been played
-	if DateTime.now > game_date
+	if DateTime.yesterday > game_date
 	
 		# Open scoreboard file
 		game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
