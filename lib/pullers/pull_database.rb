@@ -144,7 +144,7 @@ Game.all_played_games.each do |game|
 		roster_team[1]['skaters'].each do |record|
 			
 			# Skip if they never played
-			next if record['toi'] == "00:00"
+			next if record['toi'] == "0:00"
 
 			player = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
@@ -158,7 +158,7 @@ Game.all_played_games.each do |game|
 		roster_team[1]['goalies'].each do |record|
 
 			# Skip if they never played
-			next if record['toi'] == "00:00"
+			next if record['toi'] == "0:00"
 
 			goalie = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
