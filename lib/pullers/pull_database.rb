@@ -14,8 +14,11 @@ require_relative '../../models/skater_stat'
 require_relative '../../models/goalie_stat'
 require_relative '../../models/team_stat'
 
+games_played = Game.all_played_games
+games_played = games_played[1..100]
+
 # Loop through all played games
-Game.all_played_games.each do |game|
+games_played.each do |game|
 
 	puts "Analyzing game: #{game.nhl_id}"
 
