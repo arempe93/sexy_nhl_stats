@@ -1,3 +1,6 @@
+# Pulls all stats (player and team) from each game
+
+
 # Require
 require 'rubygems'
 require 'json'
@@ -36,14 +39,14 @@ Game.all_played_games.each do |game|
 	home_stats = gcbx['teamStats']['home']
 	home_shots = gcbx['shotSummary'].last['shots'][0]['hShotTot']
 
-	# these tables dont exist yet... heh
+	# Store home team info in database
 	TeamStat.create(team_id: home_team_id, game_id: game.nhl_id, shots: home_shots, blocks: home_stats['hBlock'], pim: home_stats['hPIM'], hits: home_stats['hHits'], fow: home_stats['hFOW'], takeaways: home_stats['hTake'], giveaways: home_stats['hGive'], penalties: home_stats['hPP'])
 
 	# Retrieve away team stats
 	away_stats = gcbx['teamStats']['away']
 	away_shots = gcbx['shotSummary'].last['shots'][0]['aShotTot']
 
-	# these tables dont exist yet... heh
+	# Store away team infor in database
 	TeamStat.create(team_id: away_team_id, game_id: game.nhl_id, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
 	### GET SKATERS ###

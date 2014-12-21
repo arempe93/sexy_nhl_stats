@@ -10,7 +10,7 @@
 			<%= partial :'layouts/statistic', locals: {number: Player.where(player_type: 'G').count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Goalies' } %>
 		</div>
 		<div class="col-md-3">
-			<%= partial :'layouts/statistic', locals: {number: Game.count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Game stats' } %>
+			<%= partial :'layouts/statistic', locals: {number: Game.all_played_games.count.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse, text: 'Game stats' } %>
 		</div>
 	</div>
 </div>

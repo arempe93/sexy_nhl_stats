@@ -1,4 +1,8 @@
-# Pulls all NHL games and stores them in the database
+# Pulls all NHL teams and stores them in the database
+### Drops table
+### Iterates through just enough games to make sure every team plays at least once
+### Collects data from each team to store in database
+###### Follows team.rb model
 
 # Require
 require 'rubygems'

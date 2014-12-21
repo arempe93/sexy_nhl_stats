@@ -1,4 +1,10 @@
 # Pulls all NHL games and stores them in the database
+### Drops table to start
+### Reads all games from Schedule JSON file
+### Create an entry for the game in the database
+###### If the game has been played already:
+###### Store information about the game, winner, score etc.
+### Save all information in database according to game.rb model
 
 # Require
 require 'rubygems'
@@ -35,12 +41,12 @@ season.each do |game|
 	# Get the game date
 	game_date = DateTime.parse game['est']
 
+	# Create initial Game record
+	game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
+	
 	# If this game has already been played
 	if DateTime.now > game_date
 	
-		# Create initial Game record
-		game = Game.new(nhl_id: id, game_time: game_date, home_team_id: home_team.id, away_team_id: away_team.id)
-
 		# Open scoreboard file
 		game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
 		game_stats = JSON.parse(game_stats_file.read[10..-2])
@@ -75,6 +81,8 @@ season.each do |game|
 		# Save changes
 		winner.save
 		loser.save
-		game.save
 	end
+	
+	# Save changes
+	game.save
 end
