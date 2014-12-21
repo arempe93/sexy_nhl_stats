@@ -7,3 +7,6 @@
 
 # Let's not toss our db around
 .sql
+
+# Ignore local gems
+Gemfile.lock
