@@ -66,7 +66,7 @@ games_played.each do |game|
 		next if play['type'] == 'Penalty' and play['pid3']
 
 		# Get the team the player was on
-		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team.id : away_team.id)
+		player_team_id = ((play['teamid'] == home_team.nhl_id) ? home_team_id : away_team_id)
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
@@ -84,7 +84,7 @@ games_played.each do |game|
 
 		# Get the team the goalie was on
 		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
-		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team.id : away_team.id)
+		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team_id : away_team_id)
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
