@@ -85,7 +85,7 @@ games_played.each do |game|
 		#### THESE TWO LINES ARE CAUSING THE PROBLEMS
 
 		# Get the team the goalie was on
-		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? home_team_id : away_team_id)
+		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
 		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team_id : away_team_id)
 
 		####
