@@ -82,9 +82,13 @@ games_played.each do |game|
 		# Skip if this goalie has already been stored
 		next if Player.find_by(nhl_id: play['pid2'])
 
+		#### THESE TWO LINES ARE CAUSING THE PROBLEMS
+
 		# Get the team the goalie was on
-		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
+		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? home_team_id : away_team_id)
 		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team_id : away_team_id)
+
+		####
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
@@ -97,7 +101,7 @@ games_played.each do |game|
 		gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 		# Handle multiple goaltender situation for this game
-		goalie_team_name = ((goalie_team_id == home_team.id) ? 'home' : 'away')
+		goalie_team_name = ((goalie_team_id == home_team_id) ? 'home' : 'away')
 
 		if gcbx['rosters'][goalie_team_name]['goalies'].length > 1
 
@@ -141,7 +145,7 @@ games_played.each do |game|
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
-		roster_team_id = roster_team.include?("home") ? home_team.id : away_team.id
+		roster_team_id = roster_team.include?("home") ? home_team_id : away_team_id
 		
 		# Retrieve skater stats
 		roster_team[1]['skaters'].each do |record|
