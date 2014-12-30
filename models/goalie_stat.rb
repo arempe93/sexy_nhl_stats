@@ -31,19 +31,11 @@ class GoalieStat < ActiveRecord::Base
 	end
 
 	def goals_against_average
-		if toi != nil
-			time = toi.min.to_f + (toi.sec.to_f / 60)
-			((goals_against.to_f / time) * 60).round(2)
-		else
-			goals_against.to_f.round(2)
-		end
+		time = (toi.hour.to_f * 60) + toi.min.to_f + (toi.sec.to_f / 60)
+		((goals_against.to_f / time) * 60).round(2)
 	end
 
 	def time_on_ice
-		if(toi != nil)
-			toi.hour == 1 ? "#{toi.hour}:#{format('%02d', toi.min)}:#{format('%02d', toi.sec)}" : "#{format('%02d', toi.min)}:#{format('%02d', toi.sec)}"
-		else
-			"60:00"
-		end
+		toi.hour == 1 ? "#{format('%02d', toi.min + 60)}:#{format('%02d', toi.sec)}" : "#{format('%02d', toi.min)}:#{format('%02d', toi.sec)}"
 	end
 end
