@@ -26,8 +26,10 @@ Game.unstored_games.each do |game|
 	puts "Opening game: #{game.nhl_id}"
 
 	# Get teams
-	home_team = Team.find(game.home_team_id)
-	away_team = Team.find(game.away_team_id)
+	home_team_id = game.home_team_id
+	away_team_id = game.away_team_id
+	home_team = Team.find(home_team_id)
+	away_team = Team.find(away_team_id)
 
 	# Open playbyplay file
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
@@ -38,7 +40,7 @@ Game.unstored_games.each do |game|
 	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 	# Open scoreboard file
-	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{id}/gc/gcsb.jsonp")
+	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcsb.jsonp")
 	game_stats = JSON.parse(game_stats_file.read[10..-2])
 
 	### GAME UPDATES ###
@@ -107,7 +109,7 @@ Game.unstored_games.each do |game|
 		next if play['type'] == 'Penalty' and play['pid3']
 
 		# Get the team the player was on
-		player_team_id = play['teamid'] == home_team.nhl_id ? home_team.id : away_team.id
+		player_team_id = play['teamid'] == home_team.nhl_id ? home_team_id : away_team_id
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')

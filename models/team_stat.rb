@@ -2,17 +2,19 @@
 #
 # Table name: team_stats
 #
-#  id        :integer          not null, primary key
-#  team_id   :integer
-#  game_id   :integer
-#  shots     :integer
-#  blocks    :integer
-#  pim       :integer
-#  hits      :integer
-#  fow       :integer
-#  takeaways :integer
-#  giveaways :integer
-#  penalties :string(255)
+#  id         :integer          not null, primary key
+#  team_id    :integer
+#  game_id    :integer
+#  shots      :integer
+#  blocks     :integer
+#  pim        :integer
+#  hits       :integer
+#  fow        :integer
+#  takeaways  :integer
+#  giveaways  :integer
+#  penalties  :string(255)
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class TeamStat < ActiveRecord::Base
