@@ -82,13 +82,8 @@ games_played.each do |game|
 		# Skip if this goalie has already been stored
 		next if Player.find_by(nhl_id: play['pid2'])
 
-		#### THESE TWO LINES ARE CAUSING THE PROBLEMS
-
 		# Get the team the goalie was on
-		goalie_nhl_team_id = ((play['teamid'] == home_team_id) ? away_team_id : home_team_id)
-		goalie_team_id = ((goalie_nhl_team_id == home_team_id) ? home_team_id : away_team_id)
-
-		####
+		goalie_team_id = ((play['teamid'] == home_team.nhl_id) ? away_team_id : home_team_id)
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
@@ -111,7 +106,7 @@ games_played.each do |game|
 			stats['plays']['play'].each do |shot|
 
 				# Skip this play if not a shot by the other team or was made in the shootout
-				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_nhl_team_id or shot['period'] == 5
+				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_team_id or shot['period'] == 5
 
 				# Skip if this shot was made against another goalie
 				next if shot['pid2'] != goalie_nhl_id

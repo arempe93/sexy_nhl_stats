@@ -123,8 +123,7 @@ Game.unstored_games.each do |game|
 		next if Player.find_by(nhl_id: play['pid2'])
 
 		# Get the team the goalie was on
-		goalie_nhl_team_id = play['teamid'] == home_team.nhl_id ? away_team.nhl_id : home_team.nhl_id
-		goalie_team_id = goalie_nhl_team_id == home_team.nhl_id ? home_team.id : away_team.id
+		goalie_team_id = ((play['teamid'] == home_team.nhl_id) ? away_team_id : home_team_id)
 
 		# Get the goalie nhl id
 		goalie_nhl_id = play['pid2']
