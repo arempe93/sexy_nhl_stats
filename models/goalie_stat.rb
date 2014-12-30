@@ -35,7 +35,7 @@ class GoalieStat < ActiveRecord::Base
 			time = toi.min.to_f + (toi.sec.to_f / 60)
 			((goals_against.to_f / time) * 60).round(2)
 		else
-			0.0
+			goals_against.to_f.round(2)
 		end
 	end
 
