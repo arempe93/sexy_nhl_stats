@@ -200,7 +200,19 @@ Game.unstored_games.each do |game|
 
 			# Create stats record if the goalie exists
 			if goalie
-				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: "00:" + record['toi'])
+
+				# Properly determine goalie playing time
+				goalie_tois = record['toi'].split(":")
+				minutes = goalie_tois[0].to_i
+				seconds = goalie_tois[1].to_i
+
+				hours = (minutes >= 60 ? 1 : 0)
+				minutes = (minutes >= 60 ? minutes - 60 : minutes)
+
+				goalie_toi = "#{hours}:#{minutes}:#{seconds}"
+
+				# Update record
+				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: goalie_toi)
 			end
 		end
 
