@@ -91,13 +91,6 @@ games_played.each do |game|
 		# Create goalie record
 		goalie = Player.new(nhl_id: goalie_nhl_id, team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
 
-		# Open gcbx file
-
-		# THIS FILE IS ALREADY OPEN. WASTED API CALL
-
-		gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
-		gcbx = JSON.parse(gcbx_file.read[10..-2])
-
 		# Handle multiple goaltender situation for this game
 		goalie_team_name = ((goalie_team_id == home_team_id) ? 'home' : 'away')
 
