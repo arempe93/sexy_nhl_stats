@@ -1,6 +1,42 @@
 <div class="container">
 	<%= partial :'players/player_header', locals: { player: @player } %>
 
+	<h3>Stats</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Game</th>
+				<th>Date</th>
+				<th>Opponent</th>
+				<th>Goals</th>
+				<th>Shots</th>
+				<th>Shot Percentage</th>
+				<th>Assists</th>
+				<th>Points</th>
+				<th>Time on Ice</th>
+				<th>+/-</th>
+				<th>PIM</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @player.skater_stats.each do |stat| %>
+				<tr>
+					<td><%= stat.game_id %></td>
+					<td><%= Game.find(stat.game_id).game_time.to_date %></td>
+					<td><%= stat.opponent %></td>
+					<td><%= stat.goals %></td>
+					<td><%= stat.shots %></td>
+					<td><%= stat.shot_percentage %></td>
+					<td><%= stat.assists %></td>
+					<td><%= stat.points %></td>
+					<td><%= stat.time_on_ice %></td>
+					<td><%= stat.pm %></td>
+					<td><%= stat.penalty_minutes %></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
 	<h3>Goals</h3>
 	<p><%= @player.skater_stats.sum(:goals) %>
 	<h3>Assists</h3>

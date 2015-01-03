@@ -33,6 +33,20 @@ class SkaterStat < ActiveRecord::Base
 	end
 
 	def shot_percentage
-		goals.to_f / shots.to_f
+		(goals.to_f / shots.to_f).round(3)
+	end
+
+	def time_on_ice
+		toi.hour == 1 ? "#{format('%02d', toi.min + 60)}:#{format('%02d', toi.sec)}" : "#{format('%02d', toi.min)}:#{format('%02d', toi.sec)}"
+	end
+
+	def penalty_minutes
+		"#{pim}:00"
+	end	
+
+	def opponent
+		game = Game.find(game_id)
+		opp = (team_id == game.home_team_id ? Team.find(game.away_team_id) : Team.find(game.home_team_id))
+		opp.abbv
 	end
 end

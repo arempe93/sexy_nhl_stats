@@ -20,8 +20,8 @@
 			<% @player.goalie_stats.each do |stat| %>
 				<tr>
 					<td><%= stat.game_id %></td>
-					<td>date</td>
-					<td>opp</td>
+					<td><%= Game.find(stat.game_id).game_time.to_date %></td>
+					<td><%= stat.opponent %></td>
 					<td><%= stat.goals_against %></td>
 					<td><%= stat.shots_faced %></td>
 					<td><%= stat.goals_against_average %></td>
