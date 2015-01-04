@@ -42,6 +42,7 @@ end
 get '/leaders' do
 	@players = Player.where(player_type: 'S')
 	@goalies = Player.where(player_type: 'G')
+
 	erb :'pages/leaders'
 end
 
