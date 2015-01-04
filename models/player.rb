@@ -35,6 +35,10 @@ class Player < ActiveRecord::Base
 		games.count
 	end
 
+	def points
+		goals + assists
+	end
+
 	# Class Functions
 	def self.search(query)
 		Player.find_by(name: query)

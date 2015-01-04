@@ -43,11 +43,11 @@ get '/leaders' do
 	@players = Player.where(player_type: 'S')
 	@goalies = Player.where(player_type: 'G')
 
-	@goals = @players.sort_by { |player| player.goals, -player.games_played }[0..10]
-	@assists = @players.sort_by { |player| player.assists, -player.games_played }[0..10]
-	@points = @players.sort_by { |player| player.goals + player.assists, -player.games_played }[0..10]
-	@plus_minus = @players.sort_by { |player| player.pm, player.games_played }[0..10]
-	@pims = @players.sort_by { |player| player.pims, -player.games_played }[0..10]
+	@goals = @players.sort_by { |player| [player.goals, -player.games_played] }
+	@assists = @players.sort_by { |player| [player.assists, -player.games_played] }
+	@points = @players.sort_by { |player| [player.points, -player.games_played] }
+	@plus_minus = @players.sort_by { |player| [player.pm, player.games_played] }
+	@pims = @players.sort_by { |player| [player.pims, -player.games_played] }
 
 	erb :'pages/leaders'
 end

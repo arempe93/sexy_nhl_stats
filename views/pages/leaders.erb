@@ -2,5 +2,14 @@
 	<h1>League Leaders</h1>
 </div>
 <div class="container">
-	<p>Leaders!</p>
+	<h3>Goals</h3>
+	<%= partial :'layouts/stat_table', locals: { players: @goals } %>
+	<h3>Assists</h3>
+	<%= partial :'layouts/stat_table', locals: { players: @assists } %>
+	<h3>Points</h3>
+	<%= partial :'layouts/stat_table', locals: { players: @points } %>
+	<h3>Penalty Minutes</h3>
+	<%= partial :'layouts/stat_table', locals: { players: @pims } %>
+	<h3>Plus Minus</h3>
+	<%= partial :'layouts/stat_table', locals: { players: @plus_minus } %>
 </div>
