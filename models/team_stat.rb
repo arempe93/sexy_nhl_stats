@@ -31,10 +31,12 @@ class TeamStat < ActiveRecord::Base
 	def penalty_percentage
 		numbers = penalties.split '/'
 
-		numbers.first.to_i / numbers.last.to_i
+		numbers.first.to_f / numbers.last.to_f
 	end
 
 	def net_posession
 		takeaways - giveaways
 	end
+
+	# Class Functions
 end
