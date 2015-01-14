@@ -30,8 +30,9 @@ class TeamStat < ActiveRecord::Base
 	# Functions
 	def penalty_percentage
 		numbers = penalties.split '/'
+		percentage = numbers.first.to_f / numbers.last.to_f
 
-		numbers.first.to_f / numbers.last.to_f
+		percentage.nan? ? 0.00 : percentage
 	end
 
 	def net_posession
