@@ -148,7 +148,7 @@ Game.unstored_games.each do |game|
 			stats['plays']['play'].each do |shot|
 
 				# Skip this play if not a shot by the other team or was made in the shootout
-				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_nhl_team_id or shot['period'] == 5
+				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_nhl_id or shot['period'] == 5
 
 				# Skip if this shot was made against another goalie
 				next if shot['pid2'] != goalie_nhl_id
@@ -221,7 +221,7 @@ Game.unstored_games.each do |game|
 		end
 
 		# Log goalie stats
-		puts "Created #{GoalieStat.where(game_id: game.id).count} skater stats\n\n"
+		puts "Created #{GoalieStat.where(game_id: game.id).count} goalie stats\n\n"
 	end
 end
 
