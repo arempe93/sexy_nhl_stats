@@ -39,4 +39,18 @@ class TeamStat < ActiveRecord::Base
 	end
 
 	# Class Functions
+	def self.last_ten(team)
+		last_games team, 10
+	end
+
+	def self.last_games(team, n = 200)
+		last_id = where(team_id: team.id).last(n).first.id
+
+		{
+			wins: joins(:game).where("team_id = #{team.id} AND team_stats.id >= #{last_id} AND winner = true").count,
+			losses: joins(:game).where("team_id = #{team.id} AND team_stats.id >= #{last_id} AND winner = false AND decision = 'F'").count,
+			ot: joins(:game).where("team_id = #{team.id} AND team_stats.id >= #{last_id} AND winner = false AND decision = 'OT'").count,
+			so: joins(:game).where("team_id = #{team.id} AND team_stats.id >= #{last_id} AND winner = false AND decision = 'SO'").count
+		}
+	end
 end
