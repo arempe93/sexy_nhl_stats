@@ -13,6 +13,10 @@ require_relative '../models/skater_stat'
 require_relative '../models/goalie_stat'
 require_relative '../models/team_stat'
 
+# Disable database output
+old_logger = ActiveRecord::Base.logger
+ActiveRecord::Base.logger = nil
+
 # Redirect output to log file
 $stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
 
@@ -220,3 +224,6 @@ Game.unstored_games.each do |game|
 		puts "Created #{GoalieStat.where(game_id: game.id).count} skater stats\n\n"
 	end
 end
+
+# Re-enable database output
+ActiveRecord::Base.logger = old_logger
