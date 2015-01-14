@@ -49,17 +49,17 @@
 			<tr>
 				<td><strong>Totals</strong></td>
 				<td><strong><%= @totals[:goals] %></strong></td>
-				<td></td>
+				<td><strong><%= @totals[:goals_against] %></strong></td>
 				<td><strong><%= @totals[:shots] %></strong></td>
 				<td><strong><%= @totals[:hits] %></strong></td>
 				<td><strong><%= @totals[:pim] %></strong></td>
-				<td></td>
-				<td></td>
+				<td><strong><%= "#{@totals[:capitalized_pp]}/#{@totals[:power_plays]}" %></strong></td>
+				<td><strong><%= "%.1f" % (@totals[:penalty_percentage] * 100) %></strong></td>
 				<td><strong><%= @totals[:fow] %></strong></td>
 				<td><strong><%= @totals[:blocks] %></strong></td>
 				<td><strong><%= @totals[:giveaways] %></strong></td>
 				<td><strong><%= @totals[:takeaways] %></strong></td>
 			</tr>
 		</tbody>
-	</table>
+	</table
 </div>

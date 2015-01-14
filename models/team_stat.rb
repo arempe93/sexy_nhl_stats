@@ -69,5 +69,23 @@ class TeamStat < ActiveRecord::Base
 
 		# convert string values to integer
 		totals.merge(totals) { |k, v| v.to_i }
+
+		power_plays = 0
+		capitalized = 0
+		goals_against = 0
+		where(team_id: team.id).last(n).each do |stat|
+			pp = stat.penalties.split '/'
+
+			capitalized += pp.first.to_i
+			power_plays += pp.last.to_i
+			goals_against += stat.game.opponent_score team
+		end
+
+		totals[:power_plays] = power_plays
+		totals[:capitalized_pp] = capitalized
+		totals[:penalty_percentage] = capitalized.to_f / power_plays
+		totals[:goals_against] = goals_against
+
+		totals
 	end
 end
