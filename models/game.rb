@@ -41,6 +41,14 @@ class Game < ActiveRecord::Base
 		team.id == home_team_id ? away_team_score : home_team_score
 	end
 
+	def home_team_stats
+		TeamStat.find_by game_id: id, team_id: home_team_id
+	end
+
+	def away_team_stats
+		TeamStat.find_by game_id: id, team_id: away_team_id
+	end
+
 	# Class Functions
 	def self.all_played_games
 		Game.all.where('decision is not null')
