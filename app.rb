@@ -30,6 +30,16 @@ get '/teams/:abbv/stats/?' do
 	erb :'teams/stats'
 end
 
+get '/teams/:abbv/stats/versus/:vs_abbv/?' do
+	@team = Team.find_by abbv: params[:abbv]
+	@versus = Team.find_by abbv: params[:vs_abbv]
+
+	@home_games = Game.all_played_games.where home_team_id: @team.id, away_team_id: @versus.id
+	@away_games = Game.all_played_games.where home_team_id: @versus.id, away_team_id: @team.id
+
+	erb :'teams/versus'
+end
+
 # Players
 
 get '/players/?' do
