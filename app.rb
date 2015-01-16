@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/partial'
+require 'sinatra/contrib'
 require 'require_all'
 
 require_relative 'config/environments'
@@ -73,4 +74,20 @@ end
 
 get '/contact' do
 	erb :'pages/contact'
+end
+
+# API
+
+namespace '/api' do
+
+	# Teams
+
+	get '/teams/:id/?' do
+		content_type :json
+
+		team = Team.find params[:id]
+
+		team.to_json
+	end
+
 end
