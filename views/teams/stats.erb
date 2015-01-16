@@ -1,0 +1,65 @@
+<div class="jumbotron slim">
+	<div class="container">
+		<h1>
+			<img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= @team.light_logo_name.downcase %>_logo.png">
+			<%= "#{@team.city} #{@team.name}" %>
+		</h1>
+	</div>
+</div>
+<div class="container">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Opponent</th>
+				<th>GF</th>
+				<th>GA</th>
+				<th>SOG</th>
+				<th>HIT</th>
+				<th>PIM</th>
+				<th>PP</th>
+				<th>PP%</th>
+				<th>FOW</th>
+				<th>BLOCK</th>
+				<th>GIVE</th>
+				<th>TAKE</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @stats.each do |stat| %>
+
+				<% opponent = stat.game.opponent @team %>
+				<% home = stat.game.home? @team %>
+				<tr>
+					<td><%= opponent.city %> <%= opponent.name %></td>
+					<td><%= stat.goals %></td>
+					<td><%= stat.game.opponent_score @team %></td>
+					<td><%= stat.shots %></td>
+					<td><%= stat.hits %></td>
+					<td><%= stat.pim %></td>
+					<td><%= stat.penalties %></td>
+					<td><%= "%.1f" % (stat.penalty_percentage * 100) %></td>
+					<td><%= stat.fow %></td>
+					<td><%= stat.blocks %></td>
+					<td><%= stat.giveaways %></td>
+					<td><%= stat.takeaways %></td>
+				</tr>
+			<% end %>
+
+			<tr>
+				<td><strong>Totals</strong></td>
+				<td><strong><%= @totals[:goals] %></strong></td>
+				<td><strong><%= @totals[:goals_against] %></strong></td>
+				<td><strong><%= @totals[:shots] %></strong></td>
+				<td><strong><%= @totals[:hits] %></strong></td>
+				<td><strong><%= @totals[:pim] %></strong></td>
+				<td><strong><%= "#{@totals[:capitalized_pp]}/#{@totals[:power_plays]}" %></strong></td>
+				<td><strong><%= "%.1f" % (@totals[:penalty_percentage] * 100) %></strong></td>
+				<td><strong><%= @totals[:fow] %></strong></td>
+				<td><strong><%= @totals[:blocks] %></strong></td>
+				<td><strong><%= @totals[:giveaways] %></strong></td>
+				<td><strong><%= @totals[:takeaways] %></strong></td>
+			</tr>
+		</tbody>
+	</table
+</div>

@@ -13,6 +13,10 @@ require_relative '../models/skater_stat'
 require_relative '../models/goalie_stat'
 require_relative '../models/team_stat'
 
+# Disable database output
+old_logger = ActiveRecord::Base.logger
+ActiveRecord::Base.logger = nil
+
 # Redirect output to log file
 $stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
 
@@ -85,14 +89,14 @@ Game.unstored_games.each do |game|
 	home_shots = gcbx['shotSummary'].last['shots'][0]['hShotTot']
 
 	# Store home team info in database
-	TeamStat.create(team_id: game.home_team_id, game_id: game.nhl_id, shots: home_shots, blocks: home_stats['hBlock'], pim: home_stats['hPIM'], hits: home_stats['hHits'], fow: home_stats['hFOW'], takeaways: home_stats['hTake'], giveaways: home_stats['hGive'], penalties: home_stats['hPP'])
+	TeamStat.create(team_id: game.home_team_id, game_id: game.id, winner: game.home_team_score > game.away_team_score, goals: game.home_team_score, shots: home_shots, blocks: home_stats['hBlock'], pim: home_stats['hPIM'], hits: home_stats['hHits'], fow: home_stats['hFOW'], takeaways: home_stats['hTake'], giveaways: home_stats['hGive'], penalties: home_stats['hPP'])
 
 	# Retrieve away team stats
 	away_stats = gcbx['teamStats']['away']
 	away_shots = gcbx['shotSummary'].last['shots'][0]['aShotTot']
 
 	# Store away team infor in database
-	TeamStat.create(team_id: game.away_team_id, game_id: game.nhl_id, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
+	TeamStat.create(team_id: game.away_team_id, game_id: game.id, winner: game.away_team_score > game.home_team_score, goals: game.away_team_score, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
 	### PLAYER UPDATES ###
 
@@ -144,7 +148,7 @@ Game.unstored_games.each do |game|
 			stats['plays']['play'].each do |shot|
 
 				# Skip this play if not a shot by the other team or was made in the shootout
-				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_nhl_team_id or shot['period'] == 5
+				next if shot['type'] != 'Shot' or shot['teamid'] == goalie_nhl_id or shot['period'] == 5
 
 				# Skip if this shot was made against another goalie
 				next if shot['pid2'] != goalie_nhl_id
@@ -223,6 +227,9 @@ Game.unstored_games.each do |game|
 		end
 
 		# Log goalie stats
-		puts "Created #{GoalieStat.where(game_id: game.id).count} skater stats\n\n"
+		puts "Created #{GoalieStat.where(game_id: game.id).count} goalie stats\n\n"
 	end
 end
+
+# Re-enable database output
+ActiveRecord::Base.logger = old_logger

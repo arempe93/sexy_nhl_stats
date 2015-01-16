@@ -23,6 +23,13 @@ get '/teams/:abbv/?' do
 	erb :'teams/show'
 end
 
+get '/teams/:abbv/stats/?' do
+	@team = Team.find_by abbv: params[:abbv]
+	@stats = TeamStat.where team_id: @team.id
+	@totals = TeamStat.last_games_stats @team
+	erb :'teams/stats'
+end
+
 # Players
 
 get '/players/?' do
