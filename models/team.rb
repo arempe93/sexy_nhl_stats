@@ -56,9 +56,30 @@ class Team < ActiveRecord::Base
 		name.gsub /\s/, ''
 	end
 
-	# Stat functions
+	# Stat Functions
 	def points
 		wins * 2 + ot
+	end
+
+	# Chart Functions
+	def points_over_time(options = {})
+		start_game = options[:start] || 0
+		end_game = options[:end] || all_played_games.last.id
+
+		data = []
+		points = 0
+		team_stats.where("game_id >= #{start_game} AND game_id <= #{end_game}").each do |stats|
+			
+			if stats.winner
+				points += 2
+			elsif not stats.winner and stats.game.decision != 'F'
+				points += 1
+			end
+
+			data << [stats.game_id, points]
+		end
+
+		data
 	end
 
 	# Class Functions
