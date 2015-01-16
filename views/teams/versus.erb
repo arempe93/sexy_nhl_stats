@@ -1,0 +1,112 @@
+<div class="jumbotron slim">
+	<div class="container">
+		<h1>
+			<img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= @team.light_logo_name.downcase %>_logo.png">
+			<%= "#{@team.city} #{@team.name}" %>
+			VS.
+		</h1>
+		<h1>
+			<img src="http://cdn.nhle.com/nhl/images/logos/teams/<%= @versus.light_logo_name.downcase %>_logo.png">
+			<%= "#{@versus.city} #{@versus.name}" %>
+		</h1>
+	</div>
+</div>
+
+<div class="container">
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h3 class="panel-title">Home Games</h3>
+		</div>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>GF</th>
+					<th>GA</th>
+					<th>D</th>
+					<th>SOG</th>
+					<th>HIT</th>
+					<th>PIM</th>
+					<th>PP</th>
+					<th>PP%</th>
+					<th>FOW</th>
+					<th>BLOCK</th>
+					<th>GIVE</th>
+					<th>TAKE</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @home_games.each do |game| %>
+					<% stats = game.home_team_stats %>
+					<tr>
+						<td><%= game.game_time.localtime %></td>
+						<td><%= game.home_team_score %></td>
+						<td><%= game.away_team_score %></td>
+						<td><%= game.decision %></td>
+						<td><%= stats.shots %></td>
+						<td><%= stats.hits %></td>
+						<td><%= stats.pim %></td>
+						<td><%= stats.penalties %></td>
+						<td><%= "%.1f" % (stats.penalty_percentage * 100) %></td>
+						<td><%= stats.fow %></td>
+						<td><%= stats.blocks %></td>
+						<td><%= stats.giveaways %></td>
+						<td><%= stats.takeaways %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h3 class="panel-title">Away Games</h3>
+		</div>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>GF</th>
+					<th>GA</th>
+					<td>D</td>
+					<th>SOG</th>
+					<th>HIT</th>
+					<th>PIM</th>
+					<th>PP</th>
+					<th>PP%</th>
+					<th>FOW</th>
+					<th>BLOCK</th>
+					<th>GIVE</th>
+					<th>TAKE</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @away_games.each do |game| %>
+					<% stats = game.away_team_stats %>
+					<tr>
+						<td><%= game.game_time.localtime %></td>
+						<td><%= game.away_team_score %></td>
+						<td><%= game.home_team_score %></td>
+						<td><%= game.decision %></td>
+						<td><%= stats.shots %></td>
+						<td><%= stats.hits %></td>
+						<td><%= stats.pim %></td>
+						<td><%= stats.penalties %></td>
+						<td><%= "%.1f" % (stats.penalty_percentage * 100) %></td>
+						<td><%= stats.fow %></td>
+						<td><%= stats.blocks %></td>
+						<td><%= stats.giveaways %></td>
+						<td><%= stats.takeaways %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>
