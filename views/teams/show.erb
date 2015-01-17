@@ -7,6 +7,9 @@
 	</div>
 </div>
 <div class="container">
+
+	<canvas id="points_over_time" width="100%" height="50px"></canvas>
+
 	<h1>Roster</h1>
 	<% @team.players.sort_by { |player| player.sweater }.each do |player| %>
 		<div class="col-md-6">
@@ -14,3 +17,41 @@
 		</div>
 	<% end %>
 </div>
+
+<% pot_initial_data = @team.points_over_time %>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		// edit global settings
+		Chart.defaults.global.responsive = true;
+		Chart.defaults.global.scaleFontFamily = "'Lato', sans-serif";
+		Chart.defaults.global.scaleFontSize = 16;
+		Chart.defaults.global.scaleFontColor = '#999';
+		Chart.defaults.global.tooltipFontFamily = "'Lato', sans-serif";
+		
+		// POINTS OVER TIME CHART
+		var pot_context = $('#points_over_time').get(0).getContext('2d');
+
+		var pot_data = {
+
+			labels: <%= pot_initial_data.map { |pair| pair[0] } %>,
+
+			datasets: [
+				{
+					label: '<%= @team.name %>',
+					fillColor: "rgba(151,187,205,0.2)",
+					strokeColor: "rgba(151,187,205,1)",
+					pointColor: "rgba(151,187,205,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: <%= pot_initial_data.map { |pair| pair[1] } %>
+				}
+			]
+		}
+
+		var pot_line_chart = new Chart(pot_context).Line(pot_data, { datasetFill: false });
+	});
+
+</script>

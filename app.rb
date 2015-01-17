@@ -96,7 +96,7 @@ namespace '/api' do
 		team = Team.find params[:id]
 		pot = team.points_over_time start_game: params[:start], end_game: params[:end]
 
-		{ labels: pot.map { |pair| pair[0] }, data: pot.map { |pair| pair[1] } }.to_json
+		{ games: pot.map { |pair| pair[0] }, data: pot.map { |pair| pair[1] } }.to_json
 	end
 
 end
