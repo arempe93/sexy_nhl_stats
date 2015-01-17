@@ -68,7 +68,7 @@ class Team < ActiveRecord::Base
 
 		data = []
 		points = 0
-		team_stats.where("game_id >= #{start_game} AND game_id <= #{end_game}").each do |stats|
+		team_stats.where("game_id >= #{start_game} AND game_id <= #{end_game}").order(:game_id).each do |stats|
 			
 			if stats.winner
 				points += 2
