@@ -63,8 +63,8 @@ class Team < ActiveRecord::Base
 
 	# Chart Functions
 	def points_over_time(options = {})
-		start_game = options[:start] || 0
-		end_game = options[:end] || all_played_games.last.id
+		start_game = options[:start_game] || 0
+		end_game = options[:end_game] || all_played_games.last.id
 
 		data = []
 		points = 0
