@@ -17,7 +17,7 @@ Team.delete_all
 
 # Season file
 season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
-season = JSON.parse season_file.read
+season = JSON.parse(season_file.read, :quirks_mode => true)
 
 # Minimum stopping point to get all teams
 stopping_point = 2014020020

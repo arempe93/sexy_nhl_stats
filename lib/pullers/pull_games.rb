@@ -20,7 +20,7 @@ Game.delete_all
 
 # Season file
 season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
-season = JSON.parse season_file.read
+season = JSON.parse(season_file.read, :quirks_mode => true)
 
 all_star_game = 2014040060
 
