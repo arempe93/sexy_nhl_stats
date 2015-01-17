@@ -34,7 +34,7 @@ games_played.each do |game|
 
 	# Open stats file
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
-	gcbx = JSON.parse(gcbx_file.read[10..-2])
+	gcbx = JSON.parse(gcbx_file.read.strip[10..-2])
 
 	### RECORD TEAM STATS ###
 
