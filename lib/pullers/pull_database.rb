@@ -30,11 +30,11 @@ games_played.each do |game|
 
 	# Open playbyplay file 
 	stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/PlayByPlay.json")
-	stats = JSON.parse(stats_file.read, :quirks_mode => true)['data']['game']
+	stats = JSON.parse(stats_file.read)['data']['game']
 
 	# Open stats file
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
-	gcbx = JSON.parse(gcbx_file.read[10..-2],  :quirks_mode => true)
+	gcbx = JSON.parse(gcbx_file.read[10..-2])
 
 	### RECORD TEAM STATS ###
 
