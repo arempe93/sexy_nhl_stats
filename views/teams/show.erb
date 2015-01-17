@@ -10,6 +10,8 @@
 
 	<canvas id="points_over_time" width="100%" height="50px"></canvas>
 
+	<button id="change_pot" class="btn btn-primary">Change</button>
+
 	<h1>Roster</h1>
 	<% @team.players.sort_by { |player| player.sweater }.each do |player| %>
 		<div class="col-md-6">
@@ -51,7 +53,17 @@
 			]
 		}
 
-		var pot_line_chart = new Chart(pot_context).Line(pot_data, { datasetFill: false });
+		var pot_line_chart = new Chart(pot_context).Line(pot_data, {});
+
+		$('#change_pot').on('click', function() {
+
+			$.ajax({
+				url: '/api/teams/<%= %>/stats/pot?start=400',
+			}).done(function() {
+				
+			});
+			pot_line_chart.datasets[0].data;
+		});
 	});
 
 </script>
