@@ -38,7 +38,9 @@
 		</tbody>
 	</table>
 	<h3>Goals</h3>
-	<p><%= @player.skater_stats.sum(:goals) %>
+	<p><%= @player.goals %>
 	<h3>Assists</h3>
-	<p><%= @player.skater_stats.sum(:assists) %>
+	<p><%= @player.assists %>
+	<h3>Points</h3>
+	<p><%= @player.goals + @player.assists %>
 </div>

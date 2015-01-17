@@ -46,6 +46,11 @@ ActiveRecord::Schema.define(version: 20150114163234) do
     t.string  "name"
     t.integer "sweater"
     t.string  "player_type"
+    t.integer "goals",       default: 0
+    t.integer "assists",     default: 0
+    t.integer "pim",         default: 0
+    t.integer "pm",          default: 0
+    t.integer "shots",       default: 0
   end
 
   create_table "skater_stats", force: true do |t|

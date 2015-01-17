@@ -8,6 +8,11 @@
 #  name        :string(255)
 #  sweater     :integer
 #  player_type :string(255)
+#  goals       :integer          default(0)
+#  assists     :integer          default(0)
+#  pim         :integer          default(0)
+#  pm          :integer          default(0)
+#  shots       :integer          default(0)
 #
 
 class Player < ActiveRecord::Base
@@ -28,6 +33,10 @@ class Player < ActiveRecord::Base
 	# Functions
 	def games_played
 		games.count
+	end
+
+	def points
+		goals + assists
 	end
 
 	# Class Functions
