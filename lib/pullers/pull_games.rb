@@ -30,7 +30,7 @@ season.each do |game|
 	# Get game id
 	id = game['id']
 
-	next if id == all_star_game
+	break if id == all_star_game
 
 	puts "Opening game: #{id}"
 
