@@ -22,11 +22,15 @@ Game.delete_all
 season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
 season = JSON.parse season_file.read
 
+all_star_game = 2014040060
+
 # Loop through all games
 season.each do |game|
 
 	# Get game id
 	id = game['id']
+
+	break if id == all_star_game
 
 	puts "Opening game: #{id}"
 
