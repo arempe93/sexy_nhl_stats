@@ -70,6 +70,7 @@ games_played.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+		SkaterStatTotal.create(player_id: player_id)
 	end
 
 	### GET GOALIES ###
