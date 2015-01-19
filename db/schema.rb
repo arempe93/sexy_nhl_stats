@@ -50,11 +50,11 @@ ActiveRecord::Schema.define(version: 20150119030511) do
 
   create_table "skater_stat_totals", force: :cascade do |t|
     t.integer  "player_id"
-    t.integer  "goals"
-    t.integer  "assists"
-    t.integer  "shots"
-    t.integer  "pim"
-    t.integer  "pm"
+    t.integer  "goals",      default: 0
+    t.integer  "assists",    default: 0
+    t.integer  "shots",      default: 0
+    t.integer  "pim",        default: 0
+    t.integer  "pm",         default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

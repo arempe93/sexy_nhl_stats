@@ -4,17 +4,19 @@
 #
 #  id         :integer          not null, primary key
 #  player_id  :integer
-#  goals      :integer
-#  assists    :integer
-#  shots      :integer
-#  pim        :integer
-#  pm         :integer
+#  goals      :integer          default("0")
+#  assists    :integer          default("0")
+#  shots      :integer          default("0")
+#  pim        :integer          default("0")
+#  pm         :integer          default("0")
 #  created_at :datetime
 #  updated_at :datetime
 #
 
 class SkaterStatTotals < ActiveRecord::Base
 
+	# Relationships are hard
+	belongs_to :player
 
 	# Helper methods
 	def points
