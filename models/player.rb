@@ -5,14 +5,9 @@
 #  id          :integer          not null, primary key
 #  nhl_id      :integer
 #  team_id     :integer
-#  name        :string(255)
+#  name        :string
 #  sweater     :integer
-#  player_type :string(255)
-#  goals       :integer          default(0)
-#  assists     :integer          default(0)
-#  pim         :integer          default(0)
-#  pm          :integer          default(0)
-#  shots       :integer          default(0)
+#  player_type :string
 #
 
 class Player < ActiveRecord::Base

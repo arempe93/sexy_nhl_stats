@@ -9,7 +9,7 @@
 #  home_team_score :integer
 #  away_team_id    :integer
 #  away_team_score :integer
-#  decision        :string(255)
+#  decision        :string
 #  created_at      :datetime
 #  updated_at      :datetime
 #

@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114163234) do
+ActiveRecord::Schema.define(version: 20150119024522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "games", force: true do |t|
+  create_table "games", force: :cascade do |t|
     t.integer  "nhl_id"
     t.datetime "game_time"
     t.integer  "home_team_id"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20150114163234) do
     t.datetime "updated_at"
   end
 
-  create_table "goalie_stats", force: true do |t|
+  create_table "goalie_stats", force: :cascade do |t|
     t.integer  "game_id"
     t.integer  "player_id"
     t.integer  "team_id"
@@ -40,20 +40,15 @@ ActiveRecord::Schema.define(version: 20150114163234) do
     t.datetime "updated_at"
   end
 
-  create_table "players", force: true do |t|
+  create_table "players", force: :cascade do |t|
     t.integer "nhl_id"
     t.integer "team_id"
     t.string  "name"
     t.integer "sweater"
     t.string  "player_type"
-    t.integer "goals",       default: 0
-    t.integer "assists",     default: 0
-    t.integer "pim",         default: 0
-    t.integer "pm",          default: 0
-    t.integer "shots",       default: 0
   end
 
-  create_table "skater_stats", force: true do |t|
+  create_table "skater_stats", force: :cascade do |t|
     t.integer  "game_id"
     t.integer  "player_id"
     t.integer  "team_id"
@@ -67,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150114163234) do
     t.datetime "updated_at"
   end
 
-  create_table "team_stats", force: true do |t|
+  create_table "team_stats", force: :cascade do |t|
     t.integer  "team_id"
     t.integer  "game_id"
     t.integer  "shots"
@@ -84,7 +79,7 @@ ActiveRecord::Schema.define(version: 20150114163234) do
     t.boolean  "winner"
   end
 
-  create_table "teams", force: true do |t|
+  create_table "teams", force: :cascade do |t|
     t.integer  "nhl_id"
     t.string   "city"
     t.string   "name"
