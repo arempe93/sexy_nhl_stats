@@ -150,7 +150,7 @@ games_played.each do |game|
 			# Create stats record if the player exists
 			if player
 			
-				player_totals = player.skater_stat_totals
+				player_totals = player.skater_stat_total
 
 				player_totals.goals += record['g']
 				player_totals.assists += record['a']
