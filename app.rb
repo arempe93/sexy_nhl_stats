@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/partial'
-require 'sinatra/contrib'
 require 'require_all'
 
 require_relative 'config/environments'
