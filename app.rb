@@ -76,27 +76,25 @@ get '/contact' do
 	erb :'pages/contact'
 end
 
-# API
+#################
+#      API      #
+#################
 
-namespace '/api' do
+# Teams
 
-	# Teams
+get '/teams/:id/?' do
+	content_type :json
 
-	get '/teams/:id/?' do
-		content_type :json
+	team = Team.find params[:id]
 
-		team = Team.find params[:id]
+	team.to_json
+end
 
-		team.to_json
-	end
+get '/teams/:id/stats/pot/?' do
+	content_type :json
 
-	get '/teams/:id/stats/pot/?' do
-		content_type :json
+	team = Team.find params[:id]
+	pot = team.points_over_time start_game: params[:start], end_game: params[:end]
 
-		team = Team.find params[:id]
-		pot = team.points_over_time start_game: params[:start], end_game: params[:end]
-
-		{ games: pot.map { |pair| pair[0] }, data: pot.map { |pair| pair[1] } }.to_json
-	end
-
+	{ games: pot.map { |pair| pair[0] }, data: pot.map { |pair| pair[1] } }.to_json
 end

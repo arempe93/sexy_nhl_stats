@@ -11,9 +11,6 @@ gem 'sinatra-activerecord'
 # Using partial support for Sinatra
 gem 'sinatra-partial'
 
-# Using the Sinatra contrib project for extra helpers
-gem 'sinatra-contrib'
-
 # Using postgres as the DBMS
 gem 'pg'
 
