@@ -191,12 +191,15 @@ Game.unstored_games.each do |game|
 
 			# Create stats record if the player exists
 			if player
-				player.goals += record['g']
-				player.assists += record['a']
-				player.shots += record['sog']
-				player.pim += record['pim']
-				player.pm += record['pm']
-				player.save
+
+				player_totals = player.skater_total_stats
+
+				player_totals.goals += record['g']
+				player_totals.assists += record['a']
+				player_totals.shots += record['sog']
+				player_totals.pim += record['pim']
+				player_totals.pm += record['pm']
+				player_totals.save
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
