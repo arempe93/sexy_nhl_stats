@@ -13,7 +13,7 @@
 #  updated_at :datetime
 #
 
-class SkaterStatTotals < ActiveRecord::Base
+class SkaterStatTotal < ActiveRecord::Base
 
 	# Relationships are hard
 	belongs_to :player
