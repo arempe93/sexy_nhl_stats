@@ -25,6 +25,7 @@ class Player < ActiveRecord::Base
 	has_many :goalie_stats, class_name: 'GoalieStat', foreign_key: 'player_id'
 	has_many :games, through: :stats, source: :game
 	has_one :skater_totals, class_name: 'SkaterStatTotal', foreign_key: 'player_id'
+	has_one :goalie_totals, class_name: 'GoalieStatTotal', foreign_key: 'player_id'
 
 	# Functions
 	def games_played
