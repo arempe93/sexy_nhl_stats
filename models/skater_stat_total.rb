@@ -15,10 +15,10 @@
 
 class SkaterStatTotal < ActiveRecord::Base
 
-	# Relationships are hard
+	# Relationships
 	belongs_to :player
 
-	# Helper methods
+	# Functions
 	def points
 		goals + assists
 	end
