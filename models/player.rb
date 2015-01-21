@@ -24,7 +24,7 @@ class Player < ActiveRecord::Base
 	has_many :skater_stats, class_name: 'SkaterStat', foreign_key: 'player_id'
 	has_many :goalie_stats, class_name: 'GoalieStat', foreign_key: 'player_id'
 	has_many :games, through: :stats, source: :game
-	has_one :skater_stat_total
+	has_one :skater_totals, class_name: 'SkaterStatTotal', foreign_key: 'player_id'
 
 	# Functions
 	def games_played
@@ -46,9 +46,5 @@ class Player < ActiveRecord::Base
 
 	def team_abbreviation
 		Team.find(team_id).abbv
-	end
-
-	def skater_totals
-		SkaterStatTotal.find_by(player_id: nhl_id)
 	end
 end
