@@ -117,7 +117,9 @@ Game.unstored_games.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
-		SkaterStatTotal.create(player_id: player_id)
+		skater_total = SkaterStatTotal.create(player_id: player_id)
+
+		puts "SkaterStatTotal created for: #{player.name}"
 	end
 
 	# Update goalies
@@ -158,7 +160,7 @@ Game.unstored_games.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\n\n\n\n\nGAME ID: #{id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
+			puts "\n\nGAME ID: #{id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n"
 
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
@@ -192,6 +194,8 @@ Game.unstored_games.each do |game|
 
 			# Create stats record if the player exists
 			if player
+
+				puts "Accessing SkaterStatTotal for #{player.name}"
 
 				player_totals = player.skater_stat_total
 

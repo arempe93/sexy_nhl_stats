@@ -15,7 +15,7 @@ require_relative '../../models/goalie_stat'
 require_relative '../../models/team_stat'
 
 games_played = Game.all_played_games
-games_played = games_played[1..100]
+games_played = games_played[1..50]
 
 # Loop through all played games
 games_played.each do |game|
@@ -70,7 +70,7 @@ games_played.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
-		SkaterStatTotal.create(player_id: player_id)
+		skater_total = SkaterStatTotal.create(player_id: player_id)
 	end
 
 	### GET GOALIES ###
