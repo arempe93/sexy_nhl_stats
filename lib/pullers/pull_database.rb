@@ -21,6 +21,7 @@ games_played = games_played[0..50]
 games_played.each do |game|
 
 	### FILE PREPARATION ######################################################
+	
 	puts "Analyzing game: #{game.nhl_id}"
 
 	# Get teams from game id
@@ -38,8 +39,10 @@ games_played.each do |game|
 	gcbx = JSON.parse(gcbx_file.read.strip[10..-2])
 
 
-
 	### RECORD TEAM STATS #####################################################
+
+	puts "-- Recording team stats"
+
 	# Retrieve home team stats
 	home_stats = gcbx['teamStats']['home']
 	home_shots = gcbx['shotSummary'].last['shots'][0]['hShotTot']
@@ -55,8 +58,10 @@ games_played.each do |game|
 	TeamStat.create(team_id: away_team_id, game_id: game.id, winner: game.away_team_score > game.home_team_score, goals: game.away_team_score, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
 
-
 	### GET SKATERS ###########################################################
+
+	puts "-- Retrieving players"
+
 	stats['plays']['play'].each do |play|
 
 		# Get the player id
@@ -73,12 +78,14 @@ games_played.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
-		skater_total = SkaterStatTotal.create(player_id: player_id)
+		skater_total = SkaterStatTotal.create(player_id: player.id)
 	end
 
 
-
 	### GET GOALIES ###########################################################
+
+	puts "-- Retrieving goalies"
+
 	stats['plays']['play'].each do |play|
 
 		# Skip if no goalie information present
@@ -116,8 +123,6 @@ games_played.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\nGAME ID: #{game.nhl_id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n"
-
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
 
@@ -137,15 +142,20 @@ games_played.each do |game|
 	end
 
 
-
 	### GET SKATER AND GOALIE STATS ###########################################
+
+	puts "-- Pulling stats"
+
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
 		roster_team_id = roster_team.include?("home") ? home_team_id : away_team_id
-		
+
 
 		## Retrieve skater stats ####################################
+
+		puts "   -> Skater stats"
+
 		roster_team[1]['skaters'].each do |record|
 			
 			# Skip if they never played
@@ -155,8 +165,6 @@ games_played.each do |game|
 
 			# Create stats record if the player exists
 			if player
-			
-				puts "Accessing SkaterStatTotal for #{player.name}"
 
 				skater_totals = player.skater_totals
 
@@ -173,6 +181,9 @@ games_played.each do |game|
 
 
 		## Retrieve goalie stats ####################################
+
+		puts "   -> Goalie stats"
+
 		roster_team[1]['goalies'].each do |record|
 
 			# Skip if they never played
@@ -198,6 +209,8 @@ games_played.each do |game|
 			end
 		end
 	end
+
+	puts "\n"
 end
 
 puts "Success"
