@@ -15,7 +15,6 @@ require_relative '../../models/goalie_stat'
 require_relative '../../models/team_stat'
 
 games_played = Game.all_played_games
-games_played = games_played[0..50]
 
 # Loop through all played games
 games_played.each do |game|
