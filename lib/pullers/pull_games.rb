@@ -32,7 +32,7 @@ season.each do |game|
 
 	break if id == all_star_game
 
-	puts "Opening game: #{id}"
+	puts "Recording game: #{id}"
 
 	# Get team abbreviations
 	home_team_abbv = game['h']
@@ -90,3 +90,5 @@ season.each do |game|
 	# Save changes
 	game.save
 end
+
+puts "Success"

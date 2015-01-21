@@ -12,9 +12,11 @@
 #  fow        :integer
 #  takeaways  :integer
 #  giveaways  :integer
-#  penalties  :string(255)
+#  penalties  :string
 #  created_at :datetime
 #  updated_at :datetime
+#  goals      :integer
+#  winner     :boolean
 #
 
 class TeamStat < ActiveRecord::Base
