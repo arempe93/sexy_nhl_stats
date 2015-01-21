@@ -5,14 +5,9 @@
 #  id          :integer          not null, primary key
 #  nhl_id      :integer
 #  team_id     :integer
-#  name        :string(255)
+#  name        :string
 #  sweater     :integer
-#  player_type :string(255)
-#  goals       :integer          default(0)
-#  assists     :integer          default(0)
-#  pim         :integer          default(0)
-#  pm          :integer          default(0)
-#  shots       :integer          default(0)
+#  player_type :string
 #
 
 class Player < ActiveRecord::Base
@@ -29,6 +24,7 @@ class Player < ActiveRecord::Base
 	has_many :skater_stats, class_name: 'SkaterStat', foreign_key: 'player_id'
 	has_many :goalie_stats, class_name: 'GoalieStat', foreign_key: 'player_id'
 	has_many :games, through: :stats, source: :game
+	has_one :skater_totals, class_name: 'SkaterStatTotal', foreign_key: 'player_id'
 
 	# Functions
 	def games_played

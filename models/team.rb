@@ -4,17 +4,17 @@
 #
 #  id         :integer          not null, primary key
 #  nhl_id     :integer
-#  city       :string(255)
-#  name       :string(255)
-#  abbv       :string(255)
+#  city       :string
+#  name       :string
+#  abbv       :string
 #  created_at :datetime
 #  updated_at :datetime
-#  conference :string(255)
-#  division   :string(255)
-#  wins       :integer          default(0)
-#  losses     :integer          default(0)
-#  ot         :integer          default(0)
-#  row        :integer          default(0)
+#  conference :string
+#  division   :string
+#  wins       :integer          default("0")
+#  losses     :integer          default("0")
+#  ot         :integer          default("0")
+#  row        :integer          default("0")
 #
 
 class Team < ActiveRecord::Base

@@ -21,7 +21,7 @@ ActiveRecord::Base.logger = nil
 $stdout.reopen(File.expand_path('../../logs/update.txt', __FILE__), 'w')
 
 # Log time ran
-puts "======== Updated at #{DateTime.now} ========"
+puts "======== Updated at #{DateTime.now} ========\n"
 
 # Loop through all unstored games
 Game.unstored_games.each do |game|
@@ -41,13 +41,16 @@ Game.unstored_games.each do |game|
 
 	# Open stats file
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
-	gcbx = JSON.parse(gcbx_file.strip.read[10..-2])
+	gcbx = JSON.parse(gcbx_file.read.strip[10..-2])
 
 	# Open scoreboard file
 	game_stats_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcsb.jsonp")
 	game_stats = JSON.parse(game_stats_file.strip.read[10..-2])
 
-	### GAME UPDATES ###
+
+	### GAME UPDATES ##########################################################
+
+	puts "-- Update game record"
 
 	# Get home and away scores
 	away_score = game_stats['a']['tot']['g']
@@ -63,7 +66,10 @@ Game.unstored_games.each do |game|
 	game.decision = game_decision
 	game.save
 
-	### TEAM STATS ###
+
+	### TEAM STATS ############################################################
+
+	puts "-- Update team stats"
 
 	# Update team records
 	winner = (home_score > away_score ? home_team : away_team)
@@ -98,9 +104,15 @@ Game.unstored_games.each do |game|
 	# Store away team infor in database
 	TeamStat.create(team_id: game.away_team_id, game_id: game.id, winner: game.away_team_score > game.home_team_score, goals: game.away_team_score, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
-	### PLAYER UPDATES ###
 
-	# Update players
+	### PLAYER UPDATES ########################################################
+
+	puts "-- Update players"
+
+	## Update players ###############################################
+
+	puts "   -> Skaters"
+
 	stats['plays']['play'].each do |play|
 
 		# Get the player id
@@ -117,9 +129,14 @@ Game.unstored_games.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+
+		skater_total = SkaterStatTotal.create(player_id: player.id)
 	end
 
-	# Update goalies
+	## Update goalies ###############################################
+	
+	puts "   -> Goalies"
+
 	stats['plays']['play'].each do |play|
 
 		# Skip if no goalie information present
@@ -157,8 +174,6 @@ Game.unstored_games.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\n\n\n\n\nGAME ID: #{id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
-
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
 
@@ -177,34 +192,44 @@ Game.unstored_games.each do |game|
 		goalie.save
 	end
 
-	### SKATER AND GOALIE STATS ###
+
+	### SKATER AND GOALIE STATS ###############################################
+
+	puts "-- Update stats"
 
 	# Loop through home and away rosters
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
 		roster_team_id = roster_team.include?("home") ? home_team.id : away_team.id
-		
-		# Retrieve skater stats
+
+		## Retrieve skater stats ####################################
+
+		puts "   -> Skaters"
+
 		roster_team[1]['skaters'].each do |record|
 			player = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
 			# Create stats record if the player exists
 			if player
-				player.goals += record['g']
-				player.assists += record['a']
-				player.shots += record['sog']
-				player.pim += record['pim']
-				player.pm += record['pm']
-				player.save
+
+				player_totals = player.skater_totals
+
+				player_totals.goals += record['g']
+				player_totals.assists += record['a']
+				player_totals.shots += record['sog']
+				player_totals.pim += record['pim']
+				player_totals.pm += record['pm']
+				player_totals.save
+
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
 
-		# Log skater stats
-		puts "Created #{SkaterStat.where(game_id: game.id).count} skater stats"
+		## Retrieve goalie stats ####################################
+		
+		puts "   -> Goalies"
 
-		# Retrieve goalie stats
 		roster_team[1]['goalies'].each do |record|
 			goalie = Player.find_by(team_id: roster_team_id, sweater: record['num'])
 
@@ -225,11 +250,12 @@ Game.unstored_games.each do |game|
 				GoalieStat.create(player_id: goalie.id, game_id: game.id, team_id: goalie.team.id, shots_faced: record['sa'], saves: record['sv'], goals_against: record['ga'], toi: goalie_toi)
 			end
 		end
-
-		# Log goalie stats
-		puts "Created #{GoalieStat.where(game_id: game.id).count} goalie stats\n\n"
 	end
+
+	puts "\n"
 end
+
+puts "======== Finished at #{DateTime.now} ========"
 
 # Re-enable database output
 ActiveRecord::Base.logger = old_logger

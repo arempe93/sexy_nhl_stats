@@ -15,11 +15,12 @@ require_relative '../../models/goalie_stat'
 require_relative '../../models/team_stat'
 
 games_played = Game.all_played_games
-# games_played = games_played[1..100]
 
 # Loop through all played games
 games_played.each do |game|
 
+	### FILE PREPARATION ######################################################
+	
 	puts "Analyzing game: #{game.nhl_id}"
 
 	# Get teams from game id
@@ -36,7 +37,10 @@ games_played.each do |game|
 	gcbx_file = open("http://live.nhl.com/GameData/20142015/#{game.nhl_id}/gc/gcbx.jsonp")
 	gcbx = JSON.parse(gcbx_file.read.strip[10..-2])
 
-	### RECORD TEAM STATS ###
+
+	### RECORD TEAM STATS #####################################################
+
+	puts "-- Recording team stats"
 
 	# Retrieve home team stats
 	home_stats = gcbx['teamStats']['home']
@@ -52,7 +56,10 @@ games_played.each do |game|
 	# Store away team infor in database
 	TeamStat.create(team_id: away_team_id, game_id: game.id, winner: game.away_team_score > game.home_team_score, goals: game.away_team_score, shots: away_shots, blocks: away_stats['aBlock'], pim: away_stats['aPIM'], hits: away_stats['aHits'], fow: away_stats['aFOW'], takeaways: away_stats['aTake'], giveaways: away_stats['aGive'], penalties: away_stats['aPP'])
 
-	### GET SKATERS ###
+
+	### GET SKATERS ###########################################################
+
+	puts "-- Retrieving players"
 
 	stats['plays']['play'].each do |play|
 
@@ -70,9 +77,13 @@ games_played.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+		skater_total = SkaterStatTotal.create(player_id: player.id)
 	end
 
-	### GET GOALIES ###
+
+	### GET GOALIES ###########################################################
+
+	puts "-- Retrieving goalies"
 
 	stats['plays']['play'].each do |play|
 
@@ -111,8 +122,6 @@ games_played.each do |game|
 				saves_made += 1
 			end
 
-			puts "\n\n\n\n\n\nGAME ID: #{game.nhl_id}\nGOALIE ID: #{goalie.nhl_id}\nGOALIE NAME: #{goalie.name}\nSAVES COUNTED: #{saves_made}\n\n\n\n\n\n"
-
 			# Loop through goalies to find the correct one
 			gcbx['rosters'][goalie_team_name]['goalies'].each do |goalie_record|
 
@@ -131,14 +140,21 @@ games_played.each do |game|
 		goalie.save
 	end
 
-	### GET SKATER AND GOALIE STATS ###
+
+	### GET SKATER AND GOALIE STATS ###########################################
+
+	puts "-- Pulling stats"
 
 	gcbx['rosters'].each do |roster_team|
 
 		# Extrapolate team id
 		roster_team_id = roster_team.include?("home") ? home_team_id : away_team_id
-		
-		# Retrieve skater stats
+
+
+		## Retrieve skater stats ####################################
+
+		puts "   -> Skater stats"
+
 		roster_team[1]['skaters'].each do |record|
 			
 			# Skip if they never played
@@ -148,17 +164,25 @@ games_played.each do |game|
 
 			# Create stats record if the player exists
 			if player
-				player.goals += record['g']
-				player.assists += record['a']
-				player.shots += record['sog']
-				player.pim += record['pim']
-				player.pm += record['pm']
-				player.save
+
+				skater_totals = player.skater_totals
+
+				skater_totals.goals += record['g']
+				skater_totals.assists += record['a']
+				skater_totals.shots += record['sog']
+				skater_totals.pim += record['pim']
+				skater_totals.pm += record['pm']
+				skater_totals.save
+
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end
 
-		# Retrieve goalie stats
+
+		## Retrieve goalie stats ####################################
+
+		puts "   -> Goalie stats"
+
 		roster_team[1]['goalies'].each do |record|
 
 			# Skip if they never played
@@ -185,10 +209,7 @@ games_played.each do |game|
 		end
 	end
 
-	### LOGGING ###
-
-	puts "Skaters: #{Player.where(player_type: 'S').count}"
-	puts "Stats: #{SkaterStat.count}\n\n"
-	puts "Goalies: #{Player.where(player_type: 'G').count}"
-	puts "Stats: #{GoalieStat.count}"
+	puts "\n"
 end
+
+puts "Success"
