@@ -129,7 +129,13 @@ Game.unstored_games.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
+<<<<<<< HEAD
 		skater_total = SkaterStatTotal.create(player_id: player_id)
+=======
+		skater_total = SkaterStatTotal.create(player_id: player.id)
+
+		puts "SkaterStatTotal created for: #{player.name}"
+>>>>>>> 53eeaf56618c68c308f74304c94e1d4db51bc70f
 	end
 
 	## Update goalies ###############################################
@@ -212,14 +218,14 @@ Game.unstored_games.each do |game|
 			# Create stats record if the player exists
 			if player
 
-				player_totals = player.skater_stat_total
+				player_totals = player.skater_totals
 
-				player.skater_stat_total.goals += record['g']
-				player.skater_stat_total.assists += record['a']
-				player.skater_stat_total.shots += record['sog']
-				player.skater_stat_total.pim += record['pim']
-				player.skater_stat_total.pm += record['pm']
-				player.skater_stat_total.save
+				player_totals.goals += record['g']
+				player_totals.assists += record['a']
+				player_totals.shots += record['sog']
+				player_totals.pim += record['pim']
+				player_totals.pm += record['pm']
+				player_totals.save
 
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
