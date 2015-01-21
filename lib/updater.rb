@@ -129,13 +129,8 @@ Game.unstored_games.each do |game|
 
 		# Get player information
 		player = Player.create(nhl_id: player_id, team_id: player_team_id, name: play['playername'], sweater: play['sweater'], player_type: 'S')
-<<<<<<< HEAD
-		skater_total = SkaterStatTotal.create(player_id: player_id)
-=======
-		skater_total = SkaterStatTotal.create(player_id: player.id)
 
-		puts "SkaterStatTotal created for: #{player.name}"
->>>>>>> 53eeaf56618c68c308f74304c94e1d4db51bc70f
+		skater_total = SkaterStatTotal.create(player_id: player.id)
 	end
 
 	## Update goalies ###############################################
