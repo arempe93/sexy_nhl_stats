@@ -158,13 +158,13 @@ games_played.each do |game|
 			
 				puts "Accessing SkaterStatTotal for #{player.name}"
 
-				player.skater_stat_total.goals += record['g']
-				player.skater_stat_total.assists += record['a']
-				player.skater_stat_total.shots += record['sog']
-				player.skater_stat_total.pim += record['pim']
-				player.skater_stat_total.pm += record['pm']
-				player.skater_stat_total.save
-				
+				player.skater_totals.goals += record['g']
+				player.skater_totals.assists += record['a']
+				player.skater_totals.shots += record['sog']
+				player.skater_totals.pim += record['pim']
+				player.skater_totals.pm += record['pm']
+				player.skater_totals.save
+
 				SkaterStat.create(player_id: player.id, game_id: game.id, team_id: player.team.id, goals: record['g'], assists: record['a'], shots: record['sog'], pim: record['pim'], pm: record['pm'], toi: "00:" + record['toi'])
 			end
 		end

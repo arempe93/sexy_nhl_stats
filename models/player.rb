@@ -47,4 +47,8 @@ class Player < ActiveRecord::Base
 	def team_abbreviation
 		Team.find(team_id).abbv
 	end
+
+	def skater_totals
+		SkaterStatTotal.find_by(player_id: nhl_id)
+	end
 end
