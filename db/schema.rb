@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119030511) do
+ActiveRecord::Schema.define(version: 20150121221216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 20150119030511) do
     t.integer  "away_team_id"
     t.integer  "away_team_score"
     t.string   "decision"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "goalie_stat_totals", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "shots_faced",   default: 0
+    t.integer  "saves",         default: 0
+    t.integer  "goals_against", default: 0
+    t.integer  "shutouts",      default: 0
+    t.integer  "wins",          default: 0
+    t.time     "toi",           default: '2000-01-01 05:00:00'
     t.datetime "created_at"
     t.datetime "updated_at"
   end
