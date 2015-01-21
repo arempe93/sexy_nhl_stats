@@ -90,3 +90,5 @@ season.each do |game|
 	# Save changes
 	game.save
 end
+
+puts "Success"

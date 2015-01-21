@@ -64,3 +64,5 @@ season.each do |game|
 		puts "Recording away team: #{away_team.name}"
 	end
 end
+
+puts "Success"
