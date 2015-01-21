@@ -20,7 +20,7 @@ season_file = open("http://live.nhl.com/GameData/SeasonSchedule-20142015.json")
 season = JSON.parse season_file.read
 
 # Minimum stopping point to get all teams
-stopping_point = 2014020020
+stopping_point = 2014020018
 
 # Loop through all games
 season.each do |game|
@@ -59,5 +59,8 @@ season.each do |game|
 		# Store team if it doesn't already exist
 		home_team = Team.create(nhl_id: home_team_id, city: home_name.first(home_name.count - 1).join(' '), name: home_name.last, abbv: home_team_abbv) unless home_team
 		away_team = Team.create(nhl_id: away_team_id, city: away_name.first(away_name.count - 1).join(' '), name: away_name.last, abbv: away_team_abbv) unless away_team
+	
+		puts "Recording home team: #{home_team.name}"
+		puts "Recording away team: #{away_team.name}"
 	end
 end
