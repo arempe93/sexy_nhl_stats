@@ -81,7 +81,7 @@ end
 
 # Teams
 
-get '/teams/:id/?' do
+get '/api/teams/:id/?' do
 	content_type :json
 
 	team = Team.find params[:id]
@@ -89,7 +89,7 @@ get '/teams/:id/?' do
 	team.to_json
 end
 
-get '/teams/:id/stats/pot/?' do
+get '/api/teams/:id/stats/pot/?' do
 	content_type :json
 
 	team = Team.find params[:id]
