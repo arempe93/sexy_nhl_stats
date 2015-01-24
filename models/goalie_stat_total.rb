@@ -20,5 +20,12 @@ class GoalieStatTotal < ActiveRecord::Base
 	belongs_to :player
 
 	# Functions
-	
+	def save_percentage
+		saves.to_f / shots_faced.to_f
+	end
+
+	def goals_against_average
+		time = (toi.hour.to_f * 60) + toi.min.to_f + (toi.sec.to_f / 60)
+		((goals_against.to_f / time) * 60).round(2)
+	end
 end
