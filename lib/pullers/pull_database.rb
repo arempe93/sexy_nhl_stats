@@ -209,7 +209,6 @@ games_played.each do |game|
 				goalie_totals.shots_faced += record['sa']
 				goalie_totals.saves += record['sv']
 				goalie_totals.goals_against += record['ga']
-
 				goalie_totals.save
 
 				# Create record				
