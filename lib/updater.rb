@@ -153,7 +153,6 @@ Game.unstored_games.each do |game|
 
 		# Create goalie record
 		goalie = Player.new(nhl_id: goalie_nhl_id, team_id: goalie_team_id, name: play['p2name'], player_type: 'G')
-		goalie_total = GoalieStatTotal.create(player_id: goalie_nhl_id)
 
 		# Handle multiple goaltender situation for this game
 		goalie_team_name = goalie_team_id == home_team.id ? 'home' : 'away'
@@ -191,6 +190,8 @@ Game.unstored_games.each do |game|
 
 		# Save goalie record
 		goalie.save
+
+		goalie_total = GoalieStatTotal.create(player_id: goalie.id)
 	end
 
 
@@ -247,7 +248,7 @@ Game.unstored_games.each do |game|
 
 				goalie_toi = "#{hours}:#{minutes}:#{seconds}"
 
-				goalie_totals = player.goalie_totals
+				goalie_totals = goalie.goalie_totals
 
 				goalie_totals.shots_faced += record['sa']
 				goalie_totals.saves += record['sv']
