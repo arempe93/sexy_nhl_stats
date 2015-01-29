@@ -90,4 +90,23 @@ class TeamStat < ActiveRecord::Base
 
 		totals
 	end
+
+	def self.over_time(options = {})
+
+		attrib = options[:attrib]
+		team = Team.find options[:team_id]
+
+		start_game = options[:start_game] || 0
+		end_game = options[:end_game] || team.all_played_games.last.id
+
+		data = []
+		count = 0
+		self.all.where("team_id = #{team.id} AND game_id >= #{start_game} AND game_id <= #{end_game}").order(:game_id).each do |stats|
+
+			count += stats.attributes[attrib].to_i
+			data << [stats.game_id, count]
+		end
+
+		data
+	end
 end
