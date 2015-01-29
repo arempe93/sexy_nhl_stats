@@ -89,11 +89,21 @@ get '/api/teams/:id/?' do
 	team.to_json
 end
 
-get '/api/teams/:id/stats/pot/?' do
+get '/api/teams/:id/stats/time/points/?' do
 	content_type :json
 
 	team = Team.find params[:id]
 	pot = team.points_over_time start_game: params[:start], end_game: params[:end]
 
 	{ games: pot.map { |pair| pair[0] }, data: pot.map { |pair| pair[1] } }.to_json
+end
+
+get '/api/teams/:id/stats/time/:attrib/?' do
+	content_type :json
+
+	team = Team.find params[:id]
+	got = TeamStat.over_time team_id: team.id, attrib: params[:attrib], start_game: params[:start], end_game: params[:end]
+
+
+	{ games: got.map { |pair| pair[0] }, data: got.map { |pair| pair[1] } }.to_json
 end
