@@ -8,9 +8,18 @@
 </div>
 <div class="container">
 
-	<canvas id="points_over_time" width="100%" height="50px"></canvas>
+	<canvas id="team_line" width="100%" height="50px"></canvas>
 
-	<button id="change_pot" class="btn btn-primary">Change</button>
+	<select id="change_data" class="form-control">
+		<option value="points">Points</option>
+		<option value="goals">Goals</option>
+		<option value="shots">Shots</option>
+		<option value="blocks">Blocks</option>
+		<option value="pim">Penalties in Minutes</option>
+		<option value="hits">Hits</option>
+		<option value="giveaways">Giveaways</option>
+		<option value="takeaways">Takeaways</option>
+	</select>
 
 	<h1>Roster</h1>
 	<% @team.players.sort_by { |player| player.sweater }.each do |player| %>
@@ -20,7 +29,7 @@
 	<% end %>
 </div>
 
-<% pot_initial_data = @team.points_over_time %>
+<% initial_data = @team.points_over_time %>
 
 <script type="text/javascript">
 
@@ -33,11 +42,11 @@
 		Chart.defaults.global.tooltipFontFamily = "'Lato', sans-serif";
 		
 		// POINTS OVER TIME CHART
-		var pot_context = $('#points_over_time').get(0).getContext('2d');
+		var line_context = $('#team_line').get(0).getContext('2d');
 
-		var pot_data = {
+		var line_data = {
 
-			labels: <%= pot_initial_data.map { |pair| pair[0] } %>,
+			labels: <%= initial_data.map { |pair| pair[0] } %>,
 
 			datasets: [
 				{
@@ -48,20 +57,20 @@
 					pointStrokeColor: "#fff",
 					pointHighlightFill: "#fff",
 					pointHighlightStroke: "rgba(151,187,205,1)",
-					data: <%= pot_initial_data.map { |pair| pair[1] } %>
+					data: <%= initial_data.map { |pair| pair[1] } %>
 				}
 			]
 		}
 
-		var pot_line_chart = new Chart(pot_context).Line(pot_data, {});
+		var line_chart = new Chart(line_context).Line(line_data, {});
 
-		$('#change_pot').on('click', function() {
+		$('#change_data').on('change', function( event ) {
 
 			$.ajax({
-				url: '/api/teams/<%= @team.id %>/stats/time/points?start=400&end=500',
+				url: '/api/teams/<%= @team.id %>/stats/time/' + event.currentTarget.value,
 			}).done(function( data ) {
 				
-				pot_line_chart.destroy();
+				line_chart.destroy();
 
 				var new_data = {
 
@@ -81,10 +90,9 @@
 					]
 				}
 
-				pot_line_chart = new Chart(pot_context).Line(new_data, {});
+				line_chart = new Chart(line_context).Line(new_data, {});
 
 			});
-			pot_line_chart.datasets[0].data;
 		});
 	});
 
